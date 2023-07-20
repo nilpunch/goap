@@ -2,9 +2,9 @@
 
 public interface IReadOnlyState
 {
-    IReadOnlyDictionary<PropertyId, Property<bool>> BoolProperties { get; }
-    IReadOnlyDictionary<PropertyId, Property<int>> IntProperties { get; }
-    IReadOnlyDictionary<PropertyId, Property<float>> FloatProperties { get; }
+    IReadOnlyDictionary<PropertyId, bool> BoolProperties { get; }
+    IReadOnlyDictionary<PropertyId, int> IntProperties { get; }
+    IReadOnlyDictionary<PropertyId, float> FloatProperties { get; }
 
     IState Clone();
 }

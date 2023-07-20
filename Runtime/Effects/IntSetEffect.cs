@@ -15,6 +15,6 @@ public class IntSetEffect : IEffect
 
     public void Modify(IState state)
     {
-        state.IntProperties[_propertyId] = new Property<int>(_value);
+        state.IntProperties[_propertyId] = _value;
     }
 }

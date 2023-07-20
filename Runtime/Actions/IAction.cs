@@ -2,5 +2,5 @@
 {
     IReadOnlyState Requirement { get; }
     IEffect Effect { get; }
-    public float Cost { get; }
+    public int Cost { get; }
 }

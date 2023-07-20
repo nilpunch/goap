@@ -15,6 +15,6 @@ public class BoolSetEffect : IEffect
 
     public void Modify(IState state)
     {
-        state.BoolProperties[_propertyId] = new Property<bool>(_value);
+        state.BoolProperties[_propertyId] = _value;
     }
 }

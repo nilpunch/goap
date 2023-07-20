@@ -1,12 +1,21 @@
 ﻿public class Action : IAction
 {
-    public Action(IReadOnlyState requirement, IEffect effect, float cost)
+    private readonly string _name;
+
+    public Action(IReadOnlyState requirement, IEffect effect, int cost, string name = "")
     {
         Requirement = requirement;
         Effect = effect;
+        Cost = cost;
+        _name = name;
     }
     
     public IReadOnlyState Requirement { get; }
     public IEffect Effect { get; }
-    public float Cost { get; }
+    public int Cost { get; }
+
+    public override string ToString()
+    {
+        return _name;
+    }
 }

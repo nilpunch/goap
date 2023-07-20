@@ -1,4 +1,4 @@
 ﻿public interface IPropertyComparer<TValue>
 {
-    int HowHardToEqualize(Property<TValue> first, Property<TValue> second);
+    int HowHardToEqualize(TValue first, TValue second);
 }

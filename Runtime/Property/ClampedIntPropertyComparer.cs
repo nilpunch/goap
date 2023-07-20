@@ -11,9 +11,9 @@ public class ClampedIntPropertyComparer : IPropertyComparer<int>
         _max = max;
     }
     
-    public int HowHardToEqualize(Property<int> first, Property<int> second)
+    public int HowHardToEqualize(int first, int second)
     {
-        int difference = first.Value - second.Value;
+        int difference = first - second;
 
         if (difference < _min || difference > _max)
         {

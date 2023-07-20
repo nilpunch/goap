@@ -2,7 +2,7 @@
 
 public interface IState : IReadOnlyState
 {
-    new Dictionary<PropertyId, Property<bool>> BoolProperties { get; }
-    new Dictionary<PropertyId, Property<int>> IntProperties { get; }
-    new Dictionary<PropertyId, Property<float>> FloatProperties { get; }
+    new Dictionary<PropertyId, bool> BoolProperties { get; }
+    new Dictionary<PropertyId, int> IntProperties { get; }
+    new Dictionary<PropertyId, float> FloatProperties { get; }
 }

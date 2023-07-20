@@ -15,7 +15,6 @@ public class IntDeltaEffect : IEffect
 
     public void Modify(IState state)
     {
-        var property = state.IntProperties[_propertyId];
-        state.IntProperties[_propertyId] = new Property<int>(property.Value + _delta);
+        state.IntProperties[_propertyId] += _delta;
     }
 }

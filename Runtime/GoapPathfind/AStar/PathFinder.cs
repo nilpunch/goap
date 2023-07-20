@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public sealed class PathFinder
 {
@@ -20,8 +22,11 @@ public sealed class PathFinder
         ResetState();
         AddFirstNode(start);
 
-        while (_interesting.Count > 0)
+        int iterations = 0;
+
+        while (_interesting.Count > 0 && iterations < 100)
         {
+            iterations++;
             var current = _interesting.Extract();
             if (GoalReached(current))
             {
@@ -29,7 +34,7 @@ public sealed class PathFinder
             }
 
             UpdateNodeClosestToGoal(current);
-
+            
             foreach (var edge in current.Node.Outgoing)
             {
                 var nextNode = edge.End;
@@ -91,5 +96,5 @@ public sealed class PathFinder
         _nodes[node] = pathFinderNode;
     }
 
-    private static bool GoalReached(PathFinderNode current) => current.Node.DistanceToGoal == Distance.Zero;
+    private static bool GoalReached(PathFinderNode current) => current.DistanceToGoal == Distance.Zero;
 }

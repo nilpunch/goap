@@ -15,4 +15,31 @@
             state.FloatProperties[property.Key] = property.Value;
         }
     }
+    
+    public static IState ExceptEqualTo(this IReadOnlyState state, IReadOnlyState from)
+    {
+        IState result = state.Clone();
+        foreach (var property in from.BoolProperties)
+        {
+            if (state.BoolProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            {
+                result.BoolProperties.Remove(property.Key);
+            }
+        }
+        foreach (var property in from.IntProperties)
+        {
+            if (state.IntProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            {
+                result.IntProperties.Remove(property.Key);
+            }
+        }
+        foreach (var property in from.FloatProperties)
+        {
+            if (state.FloatProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            {
+                result.FloatProperties.Remove(property.Key);
+            }
+        }
+        return result;
+    }
 }

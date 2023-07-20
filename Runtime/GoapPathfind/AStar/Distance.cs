@@ -4,12 +4,12 @@ public struct Distance : IComparable<Distance>, IEquatable<Distance>
 {
     public static Distance Zero => new Distance(0);
 
-    public Distance(float value)
+    public Distance(int value)
     {
         Value = value;
     }
 
-    public float Value { get; }
+    public int Value { get; }
 
     public static Distance operator +(Distance a, Distance b)
         => new Distance(a.Value + b.Value);
@@ -30,10 +30,10 @@ public struct Distance : IComparable<Distance>, IEquatable<Distance>
         => a.Value <= b.Value;
 
     public static bool operator ==(Distance a, Distance b)
-        => a.Equals(b);
+        => a.Value.Equals(b.Value);
 
     public static bool operator !=(Distance a, Distance b)
-        => !a.Equals(b);
+        => !a.Value.Equals(b.Value);
 
     public override string ToString() => $"{Value:F2}s";
 

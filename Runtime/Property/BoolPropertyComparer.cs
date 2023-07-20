@@ -1,7 +1,14 @@
 ﻿public class BoolPropertyComparer : IPropertyComparer<bool>
 {
-    public int HowHardToEqualize(Property<bool> first, Property<bool> second)
+    private readonly int _cost;
+
+    public BoolPropertyComparer(int cost = 1)
     {
-        return first.Value == second.Value ? 0 : 1;
+        _cost = cost;
+    }
+    
+    public int HowHardToEqualize(bool first, bool second)
+    {
+        return first == second ? 0 : _cost;
     }
 }

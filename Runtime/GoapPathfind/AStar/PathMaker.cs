@@ -15,11 +15,6 @@ internal sealed class PathMaker
 
     public Path ConstructPathFrom(INode start)
     {
-        if (start.DistanceToGoal != Distance.Zero)
-        {
-            return new Path(PathCompleteness.Incomplete, ArraySegment<IEdge>.Empty);
-        }
-
         var current = start;
         var edges = new List<IEdge>();
 
@@ -31,7 +26,9 @@ internal sealed class PathMaker
 
         edges.Reverse();
 
-        return new Path(PathCompleteness.Complete, edges);
+        PathCompleteness pathCompleteness = start.DistanceToGoal == Distance.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
+
+        return new Path(pathCompleteness, edges);
     }
 
     public void Clear() => _cameFrom.Clear();
