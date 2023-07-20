@@ -55,47 +55,44 @@ public class Bot : MonoBehaviour
     
         PathFinder pathFinder = new PathFinder();
         StateComparer stateComparer = new StateComparer();
-        Path path = pathFinder.FindPath(new StateNode(currentState, goal, stateComparer, actionsLibrary));
+        Path path = pathFinder.FindPath(new ForwardSearchNode(currentState, goal, stateComparer, actionsLibrary));
     
         Debug.Log(path.Completeness);
         
         Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
     }
     
-    // private void Awake()
-    // {
-    //     var currentState = new State();
-    //     currentState.Set(Hungry, true);
-    //     currentState.Set(PizzaOrdered, true);
-    //     currentState.Set(HasFood, false);
-    //     
-    //     var goal = new State();
-    //     goal.Set(Hungry, false);
-    //
-    //     var actionsLibrary = new ActionsLibrary();
-    //
-    //     State eatRequirements = new State();
-    //     eatRequirements.Set(HasFood, true);
-    //     actionsLibrary.Add(new Action(eatRequirements, new Effect(new IEffect[]
-    //     {
-    //         new BoolSetEffect(Hungry, false),
-    //     }), 5, "Eat"));
-    //
-    //     State waitForDeliveryRequirements = new State();
-    //     waitForDeliveryRequirements.Set(PizzaOrdered, true);
-    //     actionsLibrary.Add(new Action(waitForDeliveryRequirements, new Effect(new IEffect[]
-    //     {
-    //         new BoolSetEffect(HasFood, true),
-    //     }), 2, "WaitForDelivery"));
-    //
-    //     PathFinder pathFinder = new PathFinder();
-    //     Path path = pathFinder.FindPath(new StateNode(currentState, goal, new StateComparer(), actionsLibrary));
-    //
-    //     Debug.Log(path.Completeness);
-    //     
-    //     foreach (var edge in path.Edges)
-    //     {
-    //         Debug.Log(edge);
-    //     }
-    // }
+    private void Awake2()
+    {
+        var currentState = new State();
+        currentState.Set(Hungry, true);
+        currentState.Set(PizzaOrdered, true);
+        currentState.Set(HasFood, false);
+        
+        var goal = new State();
+        goal.Set(Hungry, false);
+    
+        var actionsLibrary = new ActionsLibrary();
+    
+        State eatRequirements = new State();
+        eatRequirements.Set(HasFood, true);
+        actionsLibrary.Add(new Action(eatRequirements, new Effect(new IEffect[]
+        {
+            new BoolSetEffect(Hungry, false),
+        }), 5, "Eat"));
+    
+        State waitForDeliveryRequirements = new State();
+        waitForDeliveryRequirements.Set(PizzaOrdered, true);
+        actionsLibrary.Add(new Action(waitForDeliveryRequirements, new Effect(new IEffect[]
+        {
+            new BoolSetEffect(HasFood, true),
+        }), 2, "WaitForDelivery"));
+    
+        PathFinder pathFinder = new PathFinder();
+        Path path = pathFinder.FindPath(new BackwardSearchNode(currentState, goal, new StateComparer(), actionsLibrary));
+    
+        Debug.Log(path.Completeness);
+        
+        Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
+    }
 }

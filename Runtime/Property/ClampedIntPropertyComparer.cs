@@ -11,7 +11,7 @@ public class ClampedIntPropertyComparer : IPropertyComparer<int>
         _max = max;
     }
     
-    public int HowHardToEqualize(int first, int second)
+    public int Difference(int first, int second)
     {
         int difference = first - second;
 

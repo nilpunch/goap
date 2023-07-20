@@ -26,7 +26,7 @@ public class StateComparer : IStateComparer
         _floatComparers.Add(propertyId, comparer);
     }
     
-    public int HowHardToEqualize(IReadOnlyState first, IReadOnlyState second)
+    public int Difference(IReadOnlyState first, IReadOnlyState second)
     {
         int cost = 0;
         
@@ -36,7 +36,7 @@ public class StateComparer : IStateComparer
             {
                 comparer = _defaultBoolComparer;
             }
-            cost += comparer.HowHardToEqualize(first.BoolProperties[propertyId], second.BoolProperties[propertyId]);
+            cost += comparer.Difference(first.BoolProperties[propertyId], second.BoolProperties[propertyId]);
         }
         
         foreach (var propertyId in first.IntProperties.Keys.Where(propertyId => second.IntProperties.ContainsKey(propertyId)))
@@ -45,7 +45,7 @@ public class StateComparer : IStateComparer
             {
                 comparer = _defaultIntComparer;
             }
-            cost += comparer.HowHardToEqualize(first.IntProperties[propertyId], second.IntProperties[propertyId]);
+            cost += comparer.Difference(first.IntProperties[propertyId], second.IntProperties[propertyId]);
         }
         
         foreach (var propertyId in first.FloatProperties.Keys.Where(propertyId => second.FloatProperties.ContainsKey(propertyId)))
@@ -54,7 +54,7 @@ public class StateComparer : IStateComparer
             {
                 comparer = _defaultFloatComparer;
             }
-            cost += comparer.HowHardToEqualize(first.FloatProperties[propertyId], second.FloatProperties[propertyId]);
+            cost += comparer.Difference(first.FloatProperties[propertyId], second.FloatProperties[propertyId]);
         }
 
         return cost;

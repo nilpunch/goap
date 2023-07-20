@@ -7,7 +7,7 @@
         _cost = cost;
     }
     
-    public int HowHardToEqualize(bool first, bool second)
+    public int Difference(bool first, bool second)
     {
         return first == second ? 0 : _cost;
     }

@@ -1,4 +1,4 @@
 ﻿public interface IStateComparer
 {
-    int HowHardToEqualize(IReadOnlyState first, IReadOnlyState second);
+    int Difference(IReadOnlyState first, IReadOnlyState second);
 }

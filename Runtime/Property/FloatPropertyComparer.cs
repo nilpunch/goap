@@ -2,7 +2,7 @@
 
 public class FloatPropertyComparer : IPropertyComparer<float>
 {
-    public int HowHardToEqualize(float first, float second)
+    public int Difference(float first, float second)
     {
         return (int)Math.Abs(first - second);
     }

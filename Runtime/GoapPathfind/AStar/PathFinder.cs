@@ -50,7 +50,7 @@ public sealed class PathFinder
                 }
             }
         }
-
+        
         return _pathMaker.ConstructPathFrom(_nodeClosestToGoal.Node);
     }
 
