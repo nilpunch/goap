@@ -26,6 +26,21 @@ public class State : IState
     public Dictionary<PropertyId, Property<int>> IntProperties { get; }
     public Dictionary<PropertyId, Property<float>> FloatProperties { get; }
 
+    public void Set(PropertyId propertyId, bool value)
+    {
+        BoolProperties[propertyId] = new Property<bool>(value);
+    }
+    
+    public void Set(PropertyId propertyId, int value)
+    {
+        IntProperties[propertyId] = new Property<int>(value);
+    }
+    
+    public void Set(PropertyId propertyId, float value)
+    {
+        FloatProperties[propertyId] = new Property<float>(value);
+    }
+
     public IState Clone()
     {
         return new State(this);

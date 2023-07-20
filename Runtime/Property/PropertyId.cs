@@ -2,7 +2,17 @@
 
 public readonly struct PropertyId : IEquatable<PropertyId>
 {
-    public int Id { get; }
+    public PropertyId(Guid id)
+    {
+        Id = id;
+    }
+
+    public static PropertyId Unique()
+    {
+        return new PropertyId(Guid.NewGuid());
+    }
+
+    public Guid Id { get; }
 
     public bool Equals(PropertyId other)
     {
@@ -16,6 +26,6 @@ public readonly struct PropertyId : IEquatable<PropertyId>
 
     public override int GetHashCode()
     {
-        return Id;
+        return Id.GetHashCode();
     }
 }

@@ -4,18 +4,18 @@ public class StateNode : INode
 {
     private readonly IState _currentState;
     private readonly IReadOnlyState _goalState;
-    private readonly IStateEqualizationComplexity _stateEqualizationComplexity;
+    private readonly IStateComparer _stateComparer;
     private readonly IActionsLibrary _actionsLibrary;
 
-    public StateNode(IState currentState, IReadOnlyState goalState, IStateEqualizationComplexity stateEqualizationComplexity, IActionsLibrary actionsLibrary)
+    public StateNode(IState currentState, IReadOnlyState goalState, IStateComparer stateComparer, IActionsLibrary actionsLibrary)
     {
         _currentState = currentState;
         _goalState = goalState;
-        _stateEqualizationComplexity = stateEqualizationComplexity;
+        _stateComparer = stateComparer;
         _actionsLibrary = actionsLibrary;
     }
 
-    public Distance DistanceToGoal => new Distance(_stateEqualizationComplexity.HowHardToEqualize(_currentState, _goalState));
+    public Distance DistanceToGoal => new Distance(_stateComparer.HowHardToEqualize(_currentState, _goalState));
     
     public IEnumerable<IEdge> Outgoing
     {
@@ -25,10 +25,10 @@ public class StateNode : INode
             {
                 var newState = _currentState.Clone();
                 action.Effect.Modify(newState);
-                newState.ApplyProperties(action.Requirements);
+                newState.ApplyProperties(action.Requirement);
 
                 yield return new Edge(this,
-                    new StateNode(newState, _goalState, _stateEqualizationComplexity, _actionsLibrary),
+                    new StateNode(newState, _goalState, _stateComparer, _actionsLibrary),
                     new Distance(action.Cost));
             }
         }

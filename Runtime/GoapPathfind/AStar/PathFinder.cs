@@ -15,7 +15,7 @@ public sealed class PathFinder
         _pathMaker = new PathMaker();
     }
 
-    public Path FindPath(INode start, INode goal)
+    public Path FindPath(INode start)
     {
         ResetState();
         AddFirstNode(start);
@@ -23,9 +23,9 @@ public sealed class PathFinder
         while (_interesting.Count > 0)
         {
             var current = _interesting.Extract();
-            if (GoalReached(goal, current))
+            if (GoalReached(current))
             {
-                return _pathMaker.ConstructPathTo(current.Node, goal);
+                return _pathMaker.ConstructPathFrom(current.Node);
             }
 
             UpdateNodeClosestToGoal(current);
@@ -46,7 +46,7 @@ public sealed class PathFinder
             }
         }
 
-        return _pathMaker.ConstructPathTo(_nodeClosestToGoal.Node, goal);
+        return _pathMaker.ConstructPathFrom(_nodeClosestToGoal.Node);
     }
 
     private void ResetState()
@@ -91,5 +91,5 @@ public sealed class PathFinder
         _nodes[node] = pathFinderNode;
     }
 
-    private static bool GoalReached(INode goal, PathFinderNode current) => current.Node == goal;
+    private static bool GoalReached(PathFinderNode current) => current.Node.DistanceToGoal == Distance.Zero;
 }

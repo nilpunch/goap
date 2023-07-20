@@ -13,9 +13,9 @@ internal sealed class PathMaker
     public void AttachNode(INode node, IEdge from)
         => _cameFrom[node] = from;
 
-    public Path ConstructPathTo(INode start, INode goal)
+    public Path ConstructPathFrom(INode start)
     {
-        if (start != goal)
+        if (start.DistanceToGoal != Distance.Zero)
         {
             return new Path(PathCompleteness.Incomplete, ArraySegment<IEdge>.Empty);
         }
