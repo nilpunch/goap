@@ -18,7 +18,7 @@ public class Bot : MonoBehaviour
         var currentState = new State();
         currentState.Set(Hungry, true);
         currentState.Set(HasPhoneNumber, true);
-        currentState.Set(HasIngredients, true);
+        currentState.Set(HasIngredients, false);
         currentState.Set(HasFood, false);
         currentState.Set(PizzaOrdered, false);
         currentState.Set(FoodMixed, false);
@@ -26,6 +26,7 @@ public class Bot : MonoBehaviour
         
         var goal = new State();
         goal.Set(Hungry, false);
+        goal.Set(HasIngredients, true);
     
         var actionsLibrary = new ActionsLibrary();
     
@@ -35,11 +36,11 @@ public class Bot : MonoBehaviour
         
         State phoneForPizzaRequirements = new State();
         phoneForPizzaRequirements.Set(HasPhoneNumber, true);
-        actionsLibrary.Add(new Action(phoneForPizzaRequirements, new BoolSetEffect(PizzaOrdered, true), 3, "PhoneForPizza"));
+        actionsLibrary.Add(new Action(phoneForPizzaRequirements, new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
         
         State waitForDeliveryRequirements = new State();
         waitForDeliveryRequirements.Set(PizzaOrdered, true);
-        actionsLibrary.Add(new Action(waitForDeliveryRequirements, new BoolSetEffect(HasFood, true), 2, "WaitForDelivery"));
+        actionsLibrary.Add(new Action(waitForDeliveryRequirements, new BoolSetEffect(HasFood, true), 7, "WaitForDelivery"));
     
         State mixIngredientsRequirements = new State();
         mixIngredientsRequirements.Set(HasIngredients, true);
@@ -51,15 +52,23 @@ public class Bot : MonoBehaviour
         
         State serveFoodRequirements = new State();
         serveFoodRequirements.Set(FoodCooked, true);
-        actionsLibrary.Add(new Action(serveFoodRequirements, new BoolSetEffect(HasFood, true), 1, "ServeFood"));
+        actionsLibrary.Add(new Action(serveFoodRequirements, new Effect(new IEffect[]
+        {
+            new BoolSetEffect(HasFood, true),
+            new BoolSetEffect(HasIngredients, false),
+        }), 1, "ServeFood"));
+        
+        State goToShopRequirements = new State();
+        serveFoodRequirements.Set(HasIngredients, false);
+        actionsLibrary.Add(new Action(goToShopRequirements, new BoolSetEffect(HasIngredients, true), 3, "GoToShop"));
     
         PathFinder pathFinder = new PathFinder();
         StateComparer stateComparer = new StateComparer();
-        Path path = pathFinder.FindPath(new ForwardSearchNode(currentState, goal, stateComparer, actionsLibrary));
+        Path path = pathFinder.FindPath(new BackwardSearchNode(currentState, goal, stateComparer, actionsLibrary));
     
         Debug.Log(path.Completeness);
         
-        Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
+        Debug.Log(string.Join(", ", path.Edges.Reverse().Select(edge => edge.ToString())));
     }
     
     private void Awake2()
