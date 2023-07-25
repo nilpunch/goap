@@ -1,21 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 public class ForwardSearchNode : INode
 {
-    private readonly IReadOnlyState _currentState;
-    private readonly IReadOnlyState _goalState;
-    private readonly IStateComparer _stateComparer;
+    private readonly IReadOnlyState _state;
+    private readonly IRequirement _goal;
     private readonly IActionsLibrary _actionsLibrary;
 
-    public ForwardSearchNode(IReadOnlyState currentState, IReadOnlyState goalState, IStateComparer stateComparer, IActionsLibrary actionsLibrary)
+    public ForwardSearchNode(IReadOnlyState state, IRequirement goal, IActionsLibrary actionsLibrary)
     {
-        _currentState = currentState;
-        _goalState = goalState;
-        _stateComparer = stateComparer;
+        _state = state;
+        _goal = goal;
         _actionsLibrary = actionsLibrary;
-        DistanceToGoal = new Distance(_stateComparer.Difference(_goalState, _currentState));
+        DistanceToGoal = new Distance(_goal.MismatchCost(_state));
     }
 
     public Distance DistanceToGoal { get; }
@@ -26,14 +23,14 @@ public class ForwardSearchNode : INode
         {
             foreach (var action in _actionsLibrary.Actions)
             {
-                if (_stateComparer.Difference(action.Requirement, _currentState) != 0)
+                if (!action.Requirement.IsSatisfied(_state))
                     continue;
                 
-                var newCurrentState = _currentState.Clone();
+                var newCurrentState = _state.Clone();
                 action.Effect.Modify(newCurrentState);
 
                 yield return new ActionEdge(this,
-                    new ForwardSearchNode(newCurrentState, _goalState, _stateComparer, _actionsLibrary),
+                    new ForwardSearchNode(newCurrentState, _goal, _actionsLibrary),
                     new Distance(action.Cost),
                     action.ToString());
             }
@@ -42,6 +39,6 @@ public class ForwardSearchNode : INode
 
     public override string ToString()
     {
-        return string.Join(", ", _currentState.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
+        return string.Join(", ", _state.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
     }
 }

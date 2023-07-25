@@ -15,6 +15,17 @@ public class IntDeltaEffect : IEffect
 
     public void Modify(IState state)
     {
-        state.IntProperties[_propertyId] += _delta;
+        if (state.IntProperties.ContainsKey(_propertyId))
+        {
+            state.IntProperties[_propertyId] += _delta;
+        }
+    }
+
+    public void AntiModify(IState state)
+    {
+        if (state.IntProperties.ContainsKey(_propertyId))
+        {
+            state.IntProperties[_propertyId] -= _delta;
+        }
     }
 }

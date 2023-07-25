@@ -15,6 +15,17 @@ public class BoolSetEffect : IEffect
 
     public void Modify(IState state)
     {
-        state.BoolProperties[_propertyId] = _value;
+        if (state.BoolProperties.ContainsKey(_propertyId))
+        {
+            state.BoolProperties[_propertyId] = _value;
+        }
+    }
+
+    public void AntiModify(IState state)
+    {
+        if (state.BoolProperties.ContainsKey(_propertyId))
+        {
+            state.BoolProperties[_propertyId] = !_value;
+        }
     }
 }

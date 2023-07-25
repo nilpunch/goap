@@ -13,7 +13,7 @@ internal sealed class PathMaker
     public void AttachNode(INode node, IEdge from)
         => _cameFrom[node] = from;
 
-    public Path ConstructPathFrom(INode start)
+    public Path ConstructPathFrom(INode start, int iterations)
     {
         var current = start;
         var edges = new List<IEdge>();
@@ -28,7 +28,7 @@ internal sealed class PathMaker
 
         PathCompleteness pathCompleteness = start.DistanceToGoal == Distance.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
 
-        return new Path(pathCompleteness, edges);
+        return new Path(pathCompleteness, edges, iterations);
     }
 
     public void Clear() => _cameFrom.Clear();

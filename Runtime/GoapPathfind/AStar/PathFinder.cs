@@ -30,7 +30,7 @@ public sealed class PathFinder
             var current = _interesting.Extract();
             if (GoalReached(current))
             {
-                return _pathMaker.ConstructPathFrom(current.Node);
+                return _pathMaker.ConstructPathFrom(current.Node, iterations);
             }
 
             UpdateNodeClosestToGoal(current);
@@ -51,7 +51,7 @@ public sealed class PathFinder
             }
         }
         
-        return _pathMaker.ConstructPathFrom(_nodeClosestToGoal.Node);
+        return _pathMaker.ConstructPathFrom(_nodeClosestToGoal.Node, iterations);
     }
 
     private void ResetState()

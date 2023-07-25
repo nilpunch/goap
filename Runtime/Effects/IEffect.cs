@@ -4,4 +4,5 @@ public interface IEffect
 {
     IEnumerable<PropertyId> AffectedProperties { get; }
     void Modify(IState state);
+    void AntiModify(IState state);
 }

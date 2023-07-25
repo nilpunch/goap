@@ -19,4 +19,12 @@ public class Effect : IEffect
             effect.Modify(state);
         }
     }
+
+    public void AntiModify(IState state)
+    {
+        foreach (var effect in _effects)
+        {
+            effect.AntiModify(state);
+        }
+    }
 }

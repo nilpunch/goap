@@ -1,6 +1,6 @@
 ﻿public interface IAction
 {
-    IReadOnlyState Requirement { get; }
+    IRequirement Requirement { get; }
     IEffect Effect { get; }
-    public int Cost { get; }
+    int Cost { get; }
 }
