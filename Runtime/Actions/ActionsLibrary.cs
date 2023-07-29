@@ -22,9 +22,9 @@ public class ActionsLibrary : IActionsLibrary
         _actions.Add(action);
     }
 
-    public IEnumerable<IAction> FindActionsThatAffect(IReadOnlyState state)
+    public IEnumerable<IAction> FindActionsThatAffect(IReadOnlyAssignments assignments)
     {
-        foreach (var propertyId in state.BoolProperties.Keys.Concat(state.IntProperties.Keys).Concat(state.FloatProperties.Keys))
+        foreach (var propertyId in assignments.BoolProperties.Keys.Concat(assignments.IntProperties.Keys).Concat(assignments.FloatProperties.Keys))
         {
             if (_actionsByEffects.TryGetValue(propertyId, out var actions))
             {

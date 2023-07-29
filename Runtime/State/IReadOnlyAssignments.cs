@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-public interface IReadOnlyState
+public interface IReadOnlyAssignments
 {
     IReadOnlyDictionary<PropertyId, bool> BoolProperties { get; }
     IReadOnlyDictionary<PropertyId, int> IntProperties { get; }
     IReadOnlyDictionary<PropertyId, float> FloatProperties { get; }
 
-    IState Clone();
+    IAssignments Clone();
 }

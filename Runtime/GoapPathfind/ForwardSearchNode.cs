@@ -3,16 +3,16 @@ using System.Linq;
 
 public class ForwardSearchNode : INode
 {
-    private readonly IReadOnlyState _state;
+    private readonly IReadOnlyAssignments _assignments;
     private readonly IRequirement _goal;
     private readonly IActionsLibrary _actionsLibrary;
 
-    public ForwardSearchNode(IReadOnlyState state, IRequirement goal, IActionsLibrary actionsLibrary)
+    public ForwardSearchNode(IReadOnlyAssignments assignments, IRequirement goal, IActionsLibrary actionsLibrary)
     {
-        _state = state;
+        _assignments = assignments;
         _goal = goal;
         _actionsLibrary = actionsLibrary;
-        DistanceToGoal = new Distance(_goal.MismatchCost(_state));
+        DistanceToGoal = new Distance(_goal.MismatchCost(_assignments));
     }
 
     public Distance DistanceToGoal { get; }
@@ -23,10 +23,10 @@ public class ForwardSearchNode : INode
         {
             foreach (var action in _actionsLibrary.Actions)
             {
-                if (!action.Requirement.IsSatisfied(_state))
+                if (!action.Requirement.IsSatisfied(_assignments))
                     continue;
                 
-                var newCurrentState = _state.Clone();
+                var newCurrentState = _assignments.Clone();
                 action.Effect.Modify(newCurrentState);
 
                 yield return new ActionEdge(this,
@@ -39,6 +39,6 @@ public class ForwardSearchNode : INode
 
     public override string ToString()
     {
-        return string.Join(", ", _state.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
+        return string.Join(", ", _assignments.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
     }
 }

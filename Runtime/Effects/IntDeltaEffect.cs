@@ -13,19 +13,19 @@ public class IntDeltaEffect : IEffect
 
     public IEnumerable<PropertyId> AffectedProperties => _propertyId.Yield();
 
-    public void Modify(IState state)
+    public void Modify(IAssignments assignments)
     {
-        if (state.IntProperties.ContainsKey(_propertyId))
+        if (assignments.IntProperties.ContainsKey(_propertyId))
         {
-            state.IntProperties[_propertyId] += _delta;
+            assignments.IntProperties[_propertyId] += _delta;
         }
     }
 
-    public void AntiModify(IState state)
+    public void AntiModify(IAssignments assignments)
     {
-        if (state.IntProperties.ContainsKey(_propertyId))
+        if (assignments.IntProperties.ContainsKey(_propertyId))
         {
-            state.IntProperties[_propertyId] -= _delta;
+            assignments.IntProperties[_propertyId] -= _delta;
         }
     }
 }

@@ -1,41 +1,41 @@
 ﻿public static class StateExtensions
 {
-    public static void ApplyProperties(this IState state, IReadOnlyState from)
+    public static void ApplyProperties(this IAssignments assignments, IReadOnlyAssignments from)
     {
         foreach (var property in from.BoolProperties)
         {
-            state.BoolProperties[property.Key] = property.Value;
+            assignments.BoolProperties[property.Key] = property.Value;
         }
         foreach (var property in from.IntProperties)
         {
-            state.IntProperties[property.Key] = property.Value;
+            assignments.IntProperties[property.Key] = property.Value;
         }
         foreach (var property in from.FloatProperties)
         {
-            state.FloatProperties[property.Key] = property.Value;
+            assignments.FloatProperties[property.Key] = property.Value;
         }
     }
     
-    public static IState ExceptEqualTo(this IReadOnlyState state, IReadOnlyState from)
+    public static IAssignments ExceptEqualTo(this IReadOnlyAssignments assignments, IReadOnlyAssignments from)
     {
-        IState result = state.Clone();
+        IAssignments result = assignments.Clone();
         foreach (var property in from.BoolProperties)
         {
-            if (state.BoolProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            if (assignments.BoolProperties.TryGetValue(property.Key, out var value) && value == property.Value)
             {
                 result.BoolProperties.Remove(property.Key);
             }
         }
         foreach (var property in from.IntProperties)
         {
-            if (state.IntProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            if (assignments.IntProperties.TryGetValue(property.Key, out var value) && value == property.Value)
             {
                 result.IntProperties.Remove(property.Key);
             }
         }
         foreach (var property in from.FloatProperties)
         {
-            if (state.FloatProperties.TryGetValue(property.Key, out var value) && value == property.Value)
+            if (assignments.FloatProperties.TryGetValue(property.Key, out var value) && value == property.Value)
             {
                 result.FloatProperties.Remove(property.Key);
             }

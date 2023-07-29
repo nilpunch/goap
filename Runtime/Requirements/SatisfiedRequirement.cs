@@ -1,21 +1,26 @@
 ﻿public class SatisfiedRequirement : IRequirement
 {
-    public int MismatchCost(IReadOnlyState state)
+    public int MismatchCost(IReadOnlyAssignments assignments)
     {
         return 0;
     }
 
-    public bool IsSatisfied(IReadOnlyState state)
+    public bool IsSatisfied(IReadOnlyAssignments assignments)
     {
         return true;
     }
 
-    public IRequirement GetUnsatisfiedReminder(IReadOnlyState oldState, IReadOnlyState newState)
+    public bool IsRuined(IReadOnlyAssignments assignments)
+    {
+        return false;
+    }
+
+    public IRequirement GetUnsatisfiedReminder(IReadOnlyAssignments oldAssignments, IReadOnlyAssignments newAssignments)
     {
         return this;
     }
 
-    public void SatisfyState(IState state)
+    public void MakeSatisfactionAssignment(IAssignments assignments)
     {
     }
 }

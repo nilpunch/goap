@@ -12,19 +12,19 @@ public class Effect : IEffect
 
     public IEnumerable<PropertyId> AffectedProperties => _effects.SelectMany(effect => effect.AffectedProperties);
 
-    public void Modify(IState state)
+    public void Modify(IAssignments assignments)
     {
         foreach (var effect in _effects)
         {
-            effect.Modify(state);
+            effect.Modify(assignments);
         }
     }
 
-    public void AntiModify(IState state)
+    public void AntiModify(IAssignments assignments)
     {
         foreach (var effect in _effects)
         {
-            effect.AntiModify(state);
+            effect.AntiModify(assignments);
         }
     }
 }

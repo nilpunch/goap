@@ -13,19 +13,19 @@ public class BoolSetEffect : IEffect
 
     public IEnumerable<PropertyId> AffectedProperties => _propertyId.Yield();
 
-    public void Modify(IState state)
+    public void Modify(IAssignments assignments)
     {
-        if (state.BoolProperties.ContainsKey(_propertyId))
+        if (assignments.BoolProperties.ContainsKey(_propertyId))
         {
-            state.BoolProperties[_propertyId] = _value;
+            assignments.BoolProperties[_propertyId] = _value;
         }
     }
 
-    public void AntiModify(IState state)
+    public void AntiModify(IAssignments assignments)
     {
-        if (state.BoolProperties.ContainsKey(_propertyId))
+        if (assignments.BoolProperties.ContainsKey(_propertyId))
         {
-            state.BoolProperties[_propertyId] = !_value;
+            assignments.BoolProperties[_propertyId] = !_value;
         }
     }
 }

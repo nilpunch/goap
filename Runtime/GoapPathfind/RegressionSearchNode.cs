@@ -3,16 +3,16 @@ using System.Linq;
 
 public class RegressionSearchNode : INode
 {
-    private readonly IReadOnlyState _originalState;
+    private readonly IReadOnlyAssignments _originalAssignments;
     private readonly IRequirement _goal;
     private readonly IActionsLibrary _actionsLibrary;
 
-    public RegressionSearchNode(IReadOnlyState originalState, IRequirement goal, IActionsLibrary actionsLibrary)
+    public RegressionSearchNode(IReadOnlyAssignments originalAssignments, IRequirement goal, IActionsLibrary actionsLibrary)
     {
         _goal = goal;
-        _originalState = originalState;
+        _originalAssignments = originalAssignments;
         _actionsLibrary = actionsLibrary;
-        DistanceToGoal = new Distance(_goal.MismatchCost(_originalState));
+        DistanceToGoal = new Distance(_goal.MismatchCost(_originalAssignments));
     }
 
     public Distance DistanceToGoal { get; }
@@ -23,17 +23,16 @@ public class RegressionSearchNode : INode
         {
             foreach (var action in _actionsLibrary.Actions)
             {
-                var approximateGoalState = new State();
-                _goal.SatisfyState(approximateGoalState);
+                var approximateGoalAssignments = new Assignments();
+                _goal.MakeSatisfactionAssignment(approximateGoalAssignments);
 
-                var stateBeforeGoal = approximateGoalState.Clone();
-                action.Effect.AntiModify(stateBeforeGoal);
-
-                var change = _goal.MismatchCost(stateBeforeGoal);
-                if (change <= 0)
+                var assignmentsAfterEffect = approximateGoalAssignments.Clone();
+                action.Effect.Modify(assignmentsAfterEffect);
+                
+                if (_goal.IsRuined(assignmentsAfterEffect))
                     continue;
                 
-                var updatedGoal = _goal.GetUnsatisfiedReminder(stateBeforeGoal, approximateGoalState);
+                var updatedGoal = _goal.GetUnsatisfiedReminder(approximateGoalAssignments, assignmentsAfterEffect);
                 Requirements newGoal = new Requirements(new IRequirement[]
                 {
                     action.Requirement,
@@ -41,7 +40,7 @@ public class RegressionSearchNode : INode
                 });
 
                 yield return new ActionEdge(this,
-                    new RegressionSearchNode(_originalState, newGoal, _actionsLibrary),
+                    new RegressionSearchNode(_originalAssignments, newGoal, _actionsLibrary),
                     new Distance(action.Cost),
                     action.ToString());
             }
@@ -50,6 +49,6 @@ public class RegressionSearchNode : INode
 
     public override string ToString()
     {
-        return string.Join(", ", _originalState.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
+        return string.Join(", ", _originalAssignments.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
     }
 }

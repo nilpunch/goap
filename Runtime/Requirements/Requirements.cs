@@ -20,32 +20,37 @@ public class Requirements : IRequirement
         _requirements.Add(requirement);
     }
 
-    public void RemoveSatisfiedRequirements(IReadOnlyState state)
+    public void RemoveSatisfiedRequirements(IReadOnlyAssignments assignments)
     {
-        _requirements.RemoveAll(requirement => requirement.IsSatisfied(state));
+        _requirements.RemoveAll(requirement => requirement.IsSatisfied(assignments));
     }
 
-    public int MismatchCost(IReadOnlyState state)
+    public int MismatchCost(IReadOnlyAssignments assignments)
     {
-        return _requirements.Sum(requirement => requirement.MismatchCost(state));
+        return _requirements.Sum(requirement => requirement.MismatchCost(assignments));
     }
 
-    public bool IsSatisfied(IReadOnlyState state)
+    public bool IsSatisfied(IReadOnlyAssignments assignments)
     {
-        return _requirements.All(requirement => requirement.IsSatisfied(state));
+        return _requirements.All(requirement => requirement.IsSatisfied(assignments));
     }
 
-    public void SatisfyState(IState state)
+    public bool IsRuined(IReadOnlyAssignments assignments)
+    {
+        return _requirements.Any(requirement => requirement.IsRuined(assignments));
+    }
+
+    public void MakeSatisfactionAssignment(IAssignments assignments)
     {
         foreach (var requirement in _requirements)
         {
-            requirement.SatisfyState(state);
+            requirement.MakeSatisfactionAssignment(assignments);
         }
     }
 
-    public IRequirement GetUnsatisfiedReminder(IReadOnlyState oldState, IReadOnlyState newState)
+    public IRequirement GetUnsatisfiedReminder(IReadOnlyAssignments oldAssignments, IReadOnlyAssignments newAssignments)
     {
-        return new Requirements(_requirements.Select(requirement => requirement.GetUnsatisfiedReminder(oldState, newState)));
+        return new Requirements(_requirements.Select(requirement => requirement.GetUnsatisfiedReminder(oldAssignments, newAssignments)));
     }
 
     public Requirements Clone()

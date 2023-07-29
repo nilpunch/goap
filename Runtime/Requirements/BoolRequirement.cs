@@ -11,19 +11,29 @@
         _difficulty = difficulty;
     }
 
-    public int MismatchCost(IReadOnlyState state)
+    public int MismatchCost(IReadOnlyAssignments assignments)
     {
-        return state.BoolProperties[_propertyId] == _value ? 0 : _difficulty;
+        if (assignments.BoolProperties.TryGetValue(_propertyId, out var value))
+        {
+            return value == _value ? 0 : _difficulty;
+        }
+        
+        return _difficulty;
     }
 
-    public bool IsSatisfied(IReadOnlyState state)
+    public bool IsSatisfied(IReadOnlyAssignments assignments)
     {
-        return state.BoolProperties[_propertyId] == _value;
+        return assignments.BoolProperties.TryGetValue(_propertyId, out var value) && value == _value;
     }
 
-    public IRequirement GetUnsatisfiedReminder(IReadOnlyState oldState, IReadOnlyState newState)
+    public bool IsRuined(IReadOnlyAssignments assignments)
     {
-        if (!IsSatisfied(oldState) && IsSatisfied(newState))
+        return assignments.BoolProperties.TryGetValue(_propertyId, out var value) && value != _value;
+    }
+
+    public IRequirement GetUnsatisfiedReminder(IReadOnlyAssignments oldAssignments, IReadOnlyAssignments newAssignments)
+    {
+        if (!IsSatisfied(oldAssignments) && IsSatisfied(newAssignments))
         {
             return new SatisfiedRequirement();
         }
@@ -31,8 +41,8 @@
         return this;
     }
 
-    public void SatisfyState(IState state)
+    public void MakeSatisfactionAssignment(IAssignments assignments)
     {
-        state.BoolProperties[_propertyId] = _value;
+        assignments.BoolProperties[_propertyId] = _value;
     }
 }

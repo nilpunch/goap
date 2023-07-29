@@ -3,6 +3,6 @@
 public interface IEffect
 {
     IEnumerable<PropertyId> AffectedProperties { get; }
-    void Modify(IState state);
-    void AntiModify(IState state);
+    void Modify(IAssignments assignments);
+    void AntiModify(IAssignments assignments);
 }

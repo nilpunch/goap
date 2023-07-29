@@ -17,7 +17,7 @@ public class ComplexBoolTest : MonoBehaviour
 
     private void Awake()
     {
-        var worldState = new State();
+        var worldState = new Assignments();
         worldState.Set(Hungry, true);
         worldState.Set(HasPhoneNumber, true);
         worldState.Set(HasIngredients, true);

@@ -10,24 +10,24 @@ public class SimpleIntTest : MonoBehaviour
 
     private void Awake()
     {
-        var worldState = new State();
+        var worldState = new Assignments();
         worldState.Set(FoodSupply, 0);
         worldState.Set(HungryLevel, 10);
 
         var goal = new Requirements(new IRequirement[]
         {
-            new IntLessEqualRequirement(HungryLevel, 0)
+            new IntLessEqualRequirement(HungryLevel, 0, 1, 100)
         });
     
         var actionsLibrary = new ActionsLibrary();
     
-        actionsLibrary.Add(new Action(new IntGreaterEqualRequirement(FoodSupply, 1), new Effect(new IEffect[]
+        actionsLibrary.Add(new Action(new IntGreaterEqualRequirement(FoodSupply, 1, 1, 0), new Effect(new IEffect[]
         {
             new IntDeltaEffect(FoodSupply, -1),
             new IntDeltaEffect(HungryLevel, -3),
         }) , 1, "EatFood"));
         
-        actionsLibrary.Add(new Action(new IntLessEqualRequirement(FoodSupply, 0), new IntDeltaEffect(FoodSupply, 1), 1, "ObtainFood"));
+        actionsLibrary.Add(new Action(new SatisfiedRequirement(), new IntDeltaEffect(FoodSupply, 1), 1, "ObtainFood"));
 
         if (_goInReverse)
         {
