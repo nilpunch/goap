@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 
 public class Effect : IEffect
 {
@@ -10,21 +9,13 @@ public class Effect : IEffect
         _effects = effects;
     }
 
-    public IEnumerable<PropertyId> AffectedProperties => _effects.SelectMany(effect => effect.AffectedProperties);
-
-    public void Modify(IAssignments assignments)
+    public void Modify(IState state)
     {
-        foreach (var effect in _effects)
-        {
-            effect.Modify(assignments);
-        }
+        _effects.ForEach(effect => effect.Modify(state));
     }
 
-    public void AntiModify(IAssignments assignments)
+    public bool IsChangeSomething(IReadOnlySate state)
     {
-        foreach (var effect in _effects)
-        {
-            effect.AntiModify(assignments);
-        }
+        return _effects.Any(effect => effect.IsChangeSomething(state));
     }
 }

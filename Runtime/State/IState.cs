@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-public interface IAssignments : IReadOnlyAssignments
+public interface IState : IReadOnlySate
 {
     new Dictionary<PropertyId, bool> BoolProperties { get; }
     new Dictionary<PropertyId, int> IntProperties { get; }

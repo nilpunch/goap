@@ -19,11 +19,6 @@ public static class EnumerableExtensions
     ///<returns>The index of the first matching item, or -1 if no items match.</returns>
     public static int IndexOf<T>(this IEnumerable<T> items, Func<T, bool> predicate)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
-        if (predicate == null)
-            throw new ArgumentNullException(nameof(predicate));
-
         int index = 0;
         foreach (var item in items)
         {
@@ -42,17 +37,11 @@ public static class EnumerableExtensions
     ///<returns>The index of the first matching item, or -1 if the item was not found.</returns>
     public static int IndexOf<T>(this IEnumerable<T> items, T item)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
-
         return items.IndexOf(i => EqualityComparer<T>.Default.Equals(item, i));
     }
 
     public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
     {
-        if (source == null)
-            throw new ArgumentNullException(nameof(source));
-
         foreach (var item in source)
             action.Invoke(item);
     }
@@ -93,9 +82,6 @@ public static class EnumerableExtensions
 
     public static T GetMin<T>(this IEnumerable<T> items, Func<T, float> action)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
-
         float min = float.MaxValue;
         T minItem = default;
 
@@ -114,9 +100,6 @@ public static class EnumerableExtensions
 
     public static T GetMax<T>(this IEnumerable<T> items, Func<T, float> action)
     {
-        if (items == null)
-            throw new ArgumentNullException(nameof(items));
-
         float max = float.MinValue;
         T maxItem = default;
 

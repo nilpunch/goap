@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-public class BoolSetEffect : IEffect
+﻿public class BoolSetEffect : IEffect
 {
     private readonly PropertyId _propertyId;
     private readonly bool _value;
@@ -11,21 +9,13 @@ public class BoolSetEffect : IEffect
         _value = value;
     }
 
-    public IEnumerable<PropertyId> AffectedProperties => _propertyId.Yield();
-
-    public void Modify(IAssignments assignments)
+    public void Modify(IState state)
     {
-        if (assignments.BoolProperties.ContainsKey(_propertyId))
-        {
-            assignments.BoolProperties[_propertyId] = _value;
-        }
+        state.BoolProperties[_propertyId] = _value;
     }
 
-    public void AntiModify(IAssignments assignments)
+    public bool IsChangeSomething(IReadOnlySate state)
     {
-        if (assignments.BoolProperties.ContainsKey(_propertyId))
-        {
-            assignments.BoolProperties[_propertyId] = !_value;
-        }
+        return state.BoolProperties[_propertyId] != _value;
     }
 }

@@ -3,16 +3,16 @@ using System.Linq;
 
 public class ForwardSearchNode : INode
 {
-    private readonly IReadOnlyAssignments _assignments;
+    private readonly IReadOnlySate _sate;
     private readonly IRequirement _goal;
     private readonly IActionsLibrary _actionsLibrary;
 
-    public ForwardSearchNode(IReadOnlyAssignments assignments, IRequirement goal, IActionsLibrary actionsLibrary)
+    public ForwardSearchNode(IReadOnlySate sate, IRequirement goal, IActionsLibrary actionsLibrary)
     {
-        _assignments = assignments;
+        _sate = sate;
         _goal = goal;
         _actionsLibrary = actionsLibrary;
-        DistanceToGoal = new Distance(_goal.MismatchCost(_assignments));
+        DistanceToGoal = new Distance(_goal.MismatchCost(_sate));
     }
 
     public Distance DistanceToGoal { get; }
@@ -23,10 +23,10 @@ public class ForwardSearchNode : INode
         {
             foreach (var action in _actionsLibrary.Actions)
             {
-                if (!action.Requirement.IsSatisfied(_assignments))
+                if (!action.Requirement.IsSatisfied(_sate) || !action.Effect.IsChangeSomething(_sate))
                     continue;
                 
-                var newCurrentState = _assignments.Clone();
+                var newCurrentState = _sate.Clone();
                 action.Effect.Modify(newCurrentState);
 
                 yield return new ActionEdge(this,
@@ -39,6 +39,6 @@ public class ForwardSearchNode : INode
 
     public override string ToString()
     {
-        return string.Join(", ", _assignments.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
+        return string.Join(", ", _sate.BoolProperties.Select(pair => pair.Key + " = " + pair.Value));
     }
 }

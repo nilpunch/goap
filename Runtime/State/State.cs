@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
 
-public class Assignments : IAssignments
+public class State : IState
 {
-    public Assignments()
+    public State()
     {
         BoolProperties = new Dictionary<PropertyId, bool>();
         IntProperties = new Dictionary<PropertyId, int>();
         FloatProperties = new Dictionary<PropertyId, float>();
     }
     
-    public Assignments(IAssignments assignments)
+    public State(IState state)
     {
-        BoolProperties = new Dictionary<PropertyId, bool>(assignments.BoolProperties);
-        IntProperties = new Dictionary<PropertyId, int>(assignments.IntProperties);
-        FloatProperties = new Dictionary<PropertyId, float>(assignments.FloatProperties);
+        BoolProperties = new Dictionary<PropertyId, bool>(state.BoolProperties);
+        IntProperties = new Dictionary<PropertyId, int>(state.IntProperties);
+        FloatProperties = new Dictionary<PropertyId, float>(state.FloatProperties);
     }
     
-    IReadOnlyDictionary<PropertyId, bool> IReadOnlyAssignments.BoolProperties => BoolProperties;
+    IReadOnlyDictionary<PropertyId, bool> IReadOnlySate.BoolProperties => BoolProperties;
     
-    IReadOnlyDictionary<PropertyId, int> IReadOnlyAssignments.IntProperties => IntProperties;
+    IReadOnlyDictionary<PropertyId, int> IReadOnlySate.IntProperties => IntProperties;
 
-    IReadOnlyDictionary<PropertyId, float> IReadOnlyAssignments.FloatProperties => FloatProperties;
+    IReadOnlyDictionary<PropertyId, float> IReadOnlySate.FloatProperties => FloatProperties;
 
     public Dictionary<PropertyId, bool> BoolProperties { get; }
     public Dictionary<PropertyId, int> IntProperties { get; }
@@ -41,8 +41,8 @@ public class Assignments : IAssignments
         FloatProperties[propertyId] = value;
     }
 
-    public IAssignments Clone()
+    public IState Clone()
     {
-        return new Assignments(this);
+        return new State(this);
     }
 }

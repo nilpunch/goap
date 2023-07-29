@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-public class IntDeltaEffect : IEffect
+﻿public class IntDeltaEffect : IEffect
 {
     private readonly PropertyId _propertyId;
     private readonly int _delta;
@@ -11,21 +9,13 @@ public class IntDeltaEffect : IEffect
         _delta = delta;
     }
 
-    public IEnumerable<PropertyId> AffectedProperties => _propertyId.Yield();
-
-    public void Modify(IAssignments assignments)
+    public void Modify(IState state)
     {
-        if (assignments.IntProperties.ContainsKey(_propertyId))
-        {
-            assignments.IntProperties[_propertyId] += _delta;
-        }
+        state.IntProperties[_propertyId] += _delta;
     }
 
-    public void AntiModify(IAssignments assignments)
+    public bool IsChangeSomething(IReadOnlySate state)
     {
-        if (assignments.IntProperties.ContainsKey(_propertyId))
-        {
-            assignments.IntProperties[_propertyId] -= _delta;
-        }
+        return _delta != 0;
     }
 }
