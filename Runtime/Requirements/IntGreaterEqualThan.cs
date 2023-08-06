@@ -1,20 +1,24 @@
 ﻿using System;
+using Common;
 
-public class IntGreaterEqualThan : IRequirement
+namespace GOAP.Requirements
 {
-    private readonly PropertyId _propertyId;
-    private readonly int _value;
-    private readonly int _multiplier;
-
-    public IntGreaterEqualThan(PropertyId propertyId, int value, int multiplier = 1)
+    public class IntGreaterEqualThan : IRequirement
     {
-        _propertyId = propertyId;
-        _value = value;
-        _multiplier = multiplier;
-    }
+        private readonly PropertyId _propertyId;
+        private readonly int _value;
+        private readonly int _multiplier;
 
-    public int MismatchCost(IReadOnlySate sate)
-    {
-        return Math.Max(0, _value - sate.IntProperties[_propertyId]) * _multiplier;;
+        public IntGreaterEqualThan(PropertyId propertyId, int value, int multiplier = 1)
+        {
+            _propertyId = propertyId;
+            _value = value;
+            _multiplier = multiplier;
+        }
+
+        public int MismatchCost(IReadOnlySate sate)
+        {
+            return Math.Max(0, _value - sate.IntProperties[_propertyId]) * _multiplier;;
+        }
     }
 }

@@ -1,7 +1,12 @@
-﻿public class SatisfiedRequirement : IRequirement
+﻿using Common;
+
+namespace GOAP.Requirements
 {
-    public int MismatchCost(IReadOnlySate sate)
+    public class SatisfiedRequirement : IRequirement
     {
-        return 0;
+        public int MismatchCost(IReadOnlySate sate)
+        {
+            return 0;
+        }
     }
 }

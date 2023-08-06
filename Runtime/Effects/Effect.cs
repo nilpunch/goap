@@ -1,21 +1,26 @@
 ﻿using System.Linq;
+using Common;
+using GOAP.Utils;
 
-public class Effect : IEffect
+namespace GOAP.Effects
 {
-    private readonly IEffect[] _effects;
-
-    public Effect(IEffect[] effects)
+    public class Effect : IEffect
     {
-        _effects = effects;
-    }
+        private readonly IEffect[] _effects;
 
-    public void Modify(IState state)
-    {
-        _effects.ForEach(effect => effect.Modify(state));
-    }
+        public Effect(IEffect[] effects)
+        {
+            _effects = effects;
+        }
 
-    public bool IsChangeSomething(IReadOnlySate state)
-    {
-        return _effects.Any(effect => effect.IsChangeSomething(state));
+        public void Modify(IState state)
+        {
+            _effects.ForEach(effect => effect.Modify(state));
+        }
+
+        public bool IsChangeSomething(IReadOnlySate state)
+        {
+            return _effects.Any(effect => effect.IsChangeSomething(state));
+        }
     }
 }

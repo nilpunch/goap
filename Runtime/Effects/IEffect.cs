@@ -1,5 +1,10 @@
-﻿public interface IEffect
+﻿using Common;
+
+namespace GOAP.Effects
 {
-    void Modify(IState state);
-    bool IsChangeSomething(IReadOnlySate state);
+    public interface IEffect
+    {
+        void Modify(IState state);
+        bool IsChangeSomething(IReadOnlySate state);
+    }
 }

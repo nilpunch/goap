@@ -1,5 +1,10 @@
-﻿public interface IRequirement
+﻿using Common;
+
+namespace GOAP.Requirements
 {
-    int MismatchCost(IReadOnlySate sate);
-    bool IsSatisfied(IReadOnlySate sate) => MismatchCost(sate) == 0;
+    public interface IRequirement
+    {
+        int MismatchCost(IReadOnlySate sate);
+        bool IsSatisfied(IReadOnlySate sate) => MismatchCost(sate) == 0;
+    }
 }

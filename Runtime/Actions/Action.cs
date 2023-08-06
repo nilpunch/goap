@@ -1,21 +1,27 @@
-﻿public class Action : IAction
+﻿using GOAP.Effects;
+using GOAP.Requirements;
+
+namespace GOAP.Actions
 {
-    private readonly string _name;
-
-    public Action(IRequirement requirement, IEffect effect, int cost, string name = "")
+    public class Action : IAction
     {
-        Requirement = requirement;
-        Effect = effect;
-        Cost = cost;
-        _name = name;
-    }
+        private readonly string _name;
+
+        public Action(IRequirement requirement, IEffect effect, int cost, string name = "")
+        {
+            Requirement = requirement;
+            Effect = effect;
+            Cost = cost;
+            _name = name;
+        }
     
-    public IRequirement Requirement { get; }
-    public IEffect Effect { get; }
-    public int Cost { get; }
+        public IRequirement Requirement { get; }
+        public IEffect Effect { get; }
+        public int Cost { get; }
 
-    public override string ToString()
-    {
-        return _name;
+        public override string ToString()
+        {
+            return _name;
+        }
     }
 }

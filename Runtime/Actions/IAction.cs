@@ -1,6 +1,12 @@
-﻿public interface IAction
+﻿using GOAP.Effects;
+using GOAP.Requirements;
+
+namespace GOAP.Actions
 {
-    IRequirement Requirement { get; }
-    IEffect Effect { get; }
-    int Cost { get; }
+    public interface IAction
+    {
+        IRequirement Requirement { get; }
+        IEffect Effect { get; }
+        int Cost { get; }
+    }
 }

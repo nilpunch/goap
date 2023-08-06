@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 
-public interface IActionsLibrary
+namespace GOAP.Actions
 {
-    IEnumerable<IAction> Actions { get; }
+    public interface IActionsLibrary
+    {
+        IEnumerable<IAction> Actions { get; }
+    }
 }

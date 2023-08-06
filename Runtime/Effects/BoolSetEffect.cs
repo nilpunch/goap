@@ -1,21 +1,26 @@
-﻿public class BoolSetEffect : IEffect
+﻿using Common;
+
+namespace GOAP.Effects
 {
-    private readonly PropertyId _propertyId;
-    private readonly bool _value;
-
-    public BoolSetEffect(PropertyId propertyId, bool value)
+    public class BoolSetEffect : IEffect
     {
-        _propertyId = propertyId;
-        _value = value;
-    }
+        private readonly PropertyId _propertyId;
+        private readonly bool _value;
 
-    public void Modify(IState state)
-    {
-        state.BoolProperties[_propertyId] = _value;
-    }
+        public BoolSetEffect(PropertyId propertyId, bool value)
+        {
+            _propertyId = propertyId;
+            _value = value;
+        }
 
-    public bool IsChangeSomething(IReadOnlySate state)
-    {
-        return state.BoolProperties[_propertyId] != _value;
+        public void Modify(IState state)
+        {
+            state.BoolProperties[_propertyId] = _value;
+        }
+
+        public bool IsChangeSomething(IReadOnlySate state)
+        {
+            return state.BoolProperties[_propertyId] != _value;
+        }
     }
 }
