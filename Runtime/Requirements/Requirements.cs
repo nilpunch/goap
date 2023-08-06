@@ -2,7 +2,7 @@
 using System.Linq;
 using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public class Requirements : IRequirement
     {
@@ -13,14 +13,19 @@ namespace GOAP.Requirements
             _requirements = new List<IRequirement>(requirements);
         }
 
-        public int MismatchCost(IReadOnlySate sate)
+        public int MismatchCost(IReadOnlyState state)
         {
-            return _requirements.Sum(requirement => requirement.MismatchCost(sate));
+            return _requirements.Sum(requirement => requirement.MismatchCost(state));
+        }
+        
+        public IActionsLibrary ActionsToHelpSatisfy(IReadOnlyState state)
+        {
+            return new ActionsLibrary(_requirements.Select(requirement => requirement.ActionsToHelpSatisfy(state)));
         }
 
-        public bool IsSatisfied(IReadOnlySate sate)
+        public override string ToString()
         {
-            return _requirements.All(requirement => requirement.IsSatisfied(sate));
+            return string.Join(", ", _requirements.Select(requirement => requirement.ToString()));
         }
     }
 }

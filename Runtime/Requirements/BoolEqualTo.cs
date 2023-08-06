@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public class BoolEqualTo : IRequirement
     {
@@ -15,9 +15,14 @@ namespace GOAP.Requirements
             _difficulty = difficulty;
         }
 
-        public int MismatchCost(IReadOnlySate sate)
+        public int MismatchCost(IReadOnlyState state)
         {
-            return sate.BoolProperties[_propertyId] == _value ? 0 : _difficulty;
+            return state.Get<bool>(_propertyId) == _value ? 0 : _difficulty;
+        }
+
+        public override string ToString()
+        {
+            return _propertyId + " == " + _value;
         }
     }
 }

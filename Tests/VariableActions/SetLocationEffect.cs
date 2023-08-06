@@ -1,18 +1,19 @@
 ﻿using Common;
+using GOAP.Effects;
 
-namespace GOAP.Effects
+namespace GOAP
 {
-    public class BoolSetEffect : IEffect
+    public class SetLocationEffect : IEffect
     {
         private readonly PropertyId _propertyId;
-        private readonly bool _value;
+        private readonly Location _value;
 
-        public BoolSetEffect(PropertyId propertyId, bool value)
+        public SetLocationEffect(PropertyId propertyId, Location value)
         {
             _propertyId = propertyId;
             _value = value;
         }
-
+        
         public void Modify(IState state)
         {
             state.Set(_propertyId, _value);
@@ -20,7 +21,7 @@ namespace GOAP.Effects
 
         public bool IsChangeSomething(IReadOnlyState state)
         {
-            return state.Get<bool>(_propertyId) != _value;
+            return state.Get<Location>(_propertyId) != _value;
         }
     }
 }

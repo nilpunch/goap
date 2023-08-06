@@ -1,7 +1,7 @@
 ﻿using System;
 using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public class IntLessEqualThan : IRequirement
     {
@@ -16,9 +16,9 @@ namespace GOAP.Requirements
             _multiplier = multiplier;
         }
 
-        public int MismatchCost(IReadOnlySate sate)
+        public int MismatchCost(IReadOnlyState state)
         {
-            return Math.Max(0, sate.IntProperties[_propertyId] - _value) * _multiplier;
+            return Math.Max(0, state.Get<int>(_propertyId) - _value) * _multiplier;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace GOAP.Effects
             _effects.ForEach(effect => effect.Modify(state));
         }
 
-        public bool IsChangeSomething(IReadOnlySate state)
+        public bool IsChangeSomething(IReadOnlyState state)
         {
             return _effects.Any(effect => effect.IsChangeSomething(state));
         }

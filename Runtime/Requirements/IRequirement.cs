@@ -1,10 +1,11 @@
 ﻿using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public interface IRequirement
     {
-        int MismatchCost(IReadOnlySate sate);
-        bool IsSatisfied(IReadOnlySate sate) => MismatchCost(sate) == 0;
+        int MismatchCost(IReadOnlyState state);
+
+        IActionsLibrary ActionsToHelpSatisfy(IReadOnlyState state) => new EmptyActions();
     }
 }

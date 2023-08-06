@@ -1,10 +1,8 @@
 ﻿using System.Linq;
-using GOAP.Actions;
 using GOAP.Effects;
 using GOAP.GoapPathfind;
 using GOAP.GoapPathfind.AStar;
 using Common;
-using GOAP.Requirements;
 using UnityEngine;
 
 namespace GOAP
@@ -32,7 +30,7 @@ namespace GOAP
             worldState.Set(FoodMixed, false);
             worldState.Set(FoodCooked, false);
 
-            var goal = new Requirements.Requirements(new IRequirement[]
+            var goal = new GOAP.Requirements(new IRequirement[]
             {
                 new BoolEqualTo(Hungry, false),
                 new BoolEqualTo(HasIngredients, true),
@@ -74,8 +72,10 @@ namespace GOAP
             actionsLibrary.Add(new Action(new SatisfiedRequirement(),
                 new BoolSetEffect(HasIngredients, true), 3, "GoToShop"));
 
+            Debug.Log("Initial state: " + worldState);
+            Debug.Log("Goal state: " + goal);
             Path path = new PathFinder().FindPath(new ForwardSearchNode(worldState, goal, actionsLibrary));
-            Debug.Log(path.Completeness + " in " + path.Iterations);
+            Debug.Log("Plan " + path.Completeness + " in " + path.Iterations);
             if (path.Completeness == PathCompleteness.Complete)
                 Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
         }

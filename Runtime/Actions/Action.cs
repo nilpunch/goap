@@ -1,7 +1,6 @@
 ﻿using GOAP.Effects;
-using GOAP.Requirements;
 
-namespace GOAP.Actions
+namespace GOAP
 {
     public class Action : IAction
     {

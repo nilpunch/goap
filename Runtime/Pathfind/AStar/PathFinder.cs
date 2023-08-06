@@ -24,7 +24,7 @@ namespace GOAP.GoapPathfind.AStar
 
             int iterations = 0;
 
-            while (_interesting.Count > 0 && iterations < 100)
+            while (_interesting.Count > 0 && iterations < 1000)
             {
                 iterations++;
                 var current = _interesting.Extract();

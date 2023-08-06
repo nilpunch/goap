@@ -1,10 +1,8 @@
 ﻿using System.Linq;
-using GOAP.Actions;
 using GOAP.Effects;
 using GOAP.GoapPathfind;
 using GOAP.GoapPathfind.AStar;
 using Common;
-using GOAP.Requirements;
 using UnityEngine;
 
 namespace GOAP
@@ -20,7 +18,7 @@ namespace GOAP
             worldState.Set(FoodSupply, 0);
             worldState.Set(HungryLevel, 10);
 
-            var goal = new Requirements.Requirements(new IRequirement[]
+            var goal = new GOAP.Requirements(new IRequirement[]
             {
                 new IntLessEqualThan(HungryLevel, 0)
             });
@@ -36,7 +34,7 @@ namespace GOAP
             actionsLibrary.Add(new Action(new SatisfiedRequirement(), new IntDeltaEffect(FoodSupply, 1), 1, "ObtainFood"));
 
             Path path = new PathFinder().FindPath(new ForwardSearchNode(worldState, goal, actionsLibrary));
-            Debug.Log(path.Completeness + " in " + path.Iterations);
+            Debug.Log("Plan " + path.Completeness + " in " + path.Iterations);
             if (path.Completeness == PathCompleteness.Complete)
                 Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
         }

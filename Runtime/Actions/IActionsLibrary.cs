@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GOAP.Actions
+namespace GOAP
 {
     public interface IActionsLibrary
     {

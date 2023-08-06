@@ -1,10 +1,10 @@
 ﻿using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public class SatisfiedRequirement : IRequirement
     {
-        public int MismatchCost(IReadOnlySate sate)
+        public int MismatchCost(IReadOnlyState state)
         {
             return 0;
         }

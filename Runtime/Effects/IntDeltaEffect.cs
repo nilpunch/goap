@@ -15,10 +15,11 @@ namespace GOAP.Effects
 
         public void Modify(IState state)
         {
-            state.IntProperties[_propertyId] += _delta;
+            var value = state.Get<int>(_propertyId);
+            state.Set(_propertyId, value + _delta);
         }
 
-        public bool IsChangeSomething(IReadOnlySate state)
+        public bool IsChangeSomething(IReadOnlyState state)
         {
             return _delta != 0;
         }

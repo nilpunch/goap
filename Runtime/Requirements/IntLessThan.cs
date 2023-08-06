@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace GOAP.Requirements
+namespace GOAP
 {
     public class IntLessThan : IntLessEqualThan
     {
