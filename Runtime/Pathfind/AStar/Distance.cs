@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GOAP.GoapPathfind.AStar
+namespace GOAP.AStar
 {
     public struct Distance : IComparable<Distance>, IEquatable<Distance>
     {

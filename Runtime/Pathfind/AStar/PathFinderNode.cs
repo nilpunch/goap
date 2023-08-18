@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GOAP.GoapPathfind.AStar
+namespace GOAP.AStar
 {
     internal sealed class PathFinderNode : IComparable<PathFinderNode>
     {

@@ -1,6 +1,6 @@
 ﻿using Common;
 
-namespace GOAP.Effects
+namespace GOAP
 {
     public class BoolSetEffect : IEffect
     {

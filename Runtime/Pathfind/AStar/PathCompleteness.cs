@@ -1,4 +1,4 @@
-﻿namespace GOAP.GoapPathfind.AStar
+﻿namespace GOAP.AStar
 {
     public enum PathCompleteness
     {

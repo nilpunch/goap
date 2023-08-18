@@ -17,11 +17,6 @@ namespace GOAP
         {
             return _requirements.Sum(requirement => requirement.MismatchCost(state));
         }
-        
-        public IActionsLibrary ActionsToHelpSatisfy(IReadOnlyState state)
-        {
-            return new ActionsLibrary(_requirements.Select(requirement => requirement.ActionsToHelpSatisfy(state)));
-        }
 
         public override string ToString()
         {

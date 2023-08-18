@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using GOAP.Effects;
-using GOAP.GoapPathfind;
-using GOAP.GoapPathfind.AStar;
+using GOAP.AStar;
 using Common;
 using UnityEngine;
 
@@ -21,7 +19,7 @@ namespace GOAP
 
         private void Awake()
         {
-            var worldState = new Common.State();
+            var worldState = new State();
             worldState.Set(Hungry, true);
             worldState.Set(HasPhoneNumber, true);
             worldState.Set(HasIngredients, true);
@@ -30,46 +28,46 @@ namespace GOAP
             worldState.Set(FoodMixed, false);
             worldState.Set(FoodCooked, false);
 
-            var goal = new GOAP.Requirements(new IRequirement[]
+            var goal = new Requirements(new IRequirement[]
             {
                 new BoolEqualTo(Hungry, false),
                 new BoolEqualTo(HasIngredients, true),
             });
     
-            var actionsLibrary = new ActionsLibrary();
+            var actionsLibrary = new ActionLibrary();
     
-            actionsLibrary.Add(new Action(new BoolEqualTo(HasFood, true), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasFood, true), new Effect(new IEffect[]
             {
                 new BoolSetEffect(Hungry, false),
             }), 1, "Eat"));
         
-            actionsLibrary.Add(new Action(new BoolEqualTo(HasPhoneNumber, true), new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasPhoneNumber, true), new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
         
-            actionsLibrary.Add(new Action(new BoolEqualTo(PizzaOrdered, true), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(PizzaOrdered, true), new Effect(new IEffect[]
             {
                 new BoolSetEffect(HasFood, true),
                 new BoolSetEffect(PizzaOrdered, false),
             }), 7, "WaitForDelivery"));
     
-            actionsLibrary.Add(new Action(new BoolEqualTo(HasIngredients, true), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasIngredients, true), new Effect(new IEffect[]
             {
                 new BoolSetEffect(FoodMixed, true),
                 new BoolSetEffect(HasIngredients, false),
             }), 2, "MixIngredients"));
         
-            actionsLibrary.Add(new Action(new BoolEqualTo(FoodMixed, true), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(FoodMixed, true), new Effect(new IEffect[]
             {
                 new BoolSetEffect(FoodMixed, false),
                 new BoolSetEffect(FoodCooked, true),
             }), 3, "CookFood"));
         
-            actionsLibrary.Add(new Action(new BoolEqualTo(FoodCooked, true), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(FoodCooked, true), new Effect(new IEffect[]
             {
                 new BoolSetEffect(FoodCooked, false),
                 new BoolSetEffect(HasFood, true),
             }), 1, "ServeFood"));
         
-            actionsLibrary.Add(new Action(new SatisfiedRequirement(),
+            actionsLibrary.AddStaticAction(new Action(new SatisfiedRequirement(),
                 new BoolSetEffect(HasIngredients, true), 3, "GoToShop"));
 
             Debug.Log("Initial state: " + worldState);

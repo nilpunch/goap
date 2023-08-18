@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using GOAP.Effects;
-using GOAP.GoapPathfind;
-using GOAP.GoapPathfind.AStar;
+using GOAP.AStar;
 using Common;
 using UnityEngine;
 
@@ -14,24 +12,24 @@ namespace GOAP
 
         private void Awake()
         {
-            var worldState = new Common.State();
+            var worldState = new State();
             worldState.Set(FoodSupply, 0);
             worldState.Set(HungryLevel, 10);
 
-            var goal = new GOAP.Requirements(new IRequirement[]
+            var goal = new Requirements(new IRequirement[]
             {
                 new IntLessEqualThan(HungryLevel, 0)
             });
     
-            var actionsLibrary = new ActionsLibrary();
+            var actionsLibrary = new ActionLibrary();
     
-            actionsLibrary.Add(new Action(new IntGreaterThan(FoodSupply, 0), new Effect(new IEffect[]
+            actionsLibrary.AddStaticAction(new Action(new IntGreaterThan(FoodSupply, 0), new Effect(new IEffect[]
             {
                 new IntDeltaEffect(FoodSupply, -1),
                 new IntDeltaEffect(HungryLevel, -3),
             }) , 1, "EatFood"));
         
-            actionsLibrary.Add(new Action(new SatisfiedRequirement(), new IntDeltaEffect(FoodSupply, 1), 1, "ObtainFood"));
+            actionsLibrary.AddStaticAction(new Action(new SatisfiedRequirement(), new IntDeltaEffect(FoodSupply, 1), 1, "ObtainFood"));
 
             Path path = new PathFinder().FindPath(new ForwardSearchNode(worldState, goal, actionsLibrary));
             Debug.Log("Plan " + path.Completeness + " in " + path.Iterations);

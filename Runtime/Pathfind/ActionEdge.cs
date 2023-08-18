@@ -1,6 +1,6 @@
-﻿using GOAP.GoapPathfind.AStar;
+﻿using GOAP.AStar;
 
-namespace GOAP.GoapPathfind
+namespace GOAP
 {
     public sealed class ActionEdge : IEdge
     {

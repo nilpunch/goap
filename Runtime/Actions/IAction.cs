@@ -1,6 +1,4 @@
-﻿using GOAP.Effects;
-
-namespace GOAP
+﻿namespace GOAP
 {
     public interface IAction
     {

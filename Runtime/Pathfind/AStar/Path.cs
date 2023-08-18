@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GOAP.GoapPathfind.AStar
+namespace GOAP.AStar
 {
     public sealed class Path
     {

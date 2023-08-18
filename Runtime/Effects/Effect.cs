@@ -2,7 +2,7 @@
 using Common;
 using GOAP.Utils;
 
-namespace GOAP.Effects
+namespace GOAP
 {
     public class Effect : IEffect
     {

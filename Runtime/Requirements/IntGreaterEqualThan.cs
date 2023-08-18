@@ -18,7 +18,7 @@ namespace GOAP
 
         public int MismatchCost(IReadOnlyState state)
         {
-            return Math.Max(0, _value - state.Get<int>(_propertyId)) * _multiplier;;
+            return Math.Max(0, _value - state.Get<int>(_propertyId)) * _multiplier;
         }
     }
 }
