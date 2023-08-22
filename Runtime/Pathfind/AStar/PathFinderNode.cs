@@ -4,21 +4,24 @@ namespace GOAP.AStar
 {
     internal sealed class PathFinderNode : IComparable<PathFinderNode>
     {
-        public PathFinderNode(INode node, Distance traversedDistance, Distance distanceToGoal)
+        public PathFinderNode(INode node, Cost traversed, Cost remain)
         {
             Node = node;
-            TraversedDistance = traversedDistance;
-            DistanceToGoal = distanceToGoal;
-            TotalExpectedDistance = traversedDistance + distanceToGoal;
+            Traversed = traversed;
+            Remain = remain;
+            TotalExpectedCost = traversed + remain;
         }
 
-
         public INode Node { get; }
-        public Distance TraversedDistance { get; }
-        public Distance DistanceToGoal { get; }
-        public Distance TotalExpectedDistance { get; }
+        public Cost Traversed { get; }
+        public Cost Remain { get; }
+        private Cost TotalExpectedCost { get; }
 
-        public int CompareTo(PathFinderNode other) => TotalExpectedDistance.CompareTo(other.TotalExpectedDistance);
-        public override string ToString() => $"⏱~{TotalExpectedDistance}";
+        public int CompareTo(PathFinderNode other)
+        {
+            return TotalExpectedCost.CompareTo(other.TotalExpectedCost);
+        }
+
+        public override string ToString() => $"⏱~{TotalExpectedCost}";
     }
 }

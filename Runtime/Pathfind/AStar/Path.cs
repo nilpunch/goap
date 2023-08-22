@@ -1,26 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GOAP.AStar
 {
     public sealed class Path
     {
-        public Path(PathCompleteness completeness, IReadOnlyList<IEdge> edges, int iterations)
+        public Path(PathCompleteness completeness, IReadOnlyList<IEdge> edges)
         {
             Completeness = completeness;
             Edges = edges;
-            Iterations = iterations;
-
-            for (var i = 0; i < Edges.Count; i++)
-            {
-                Distance += Edges[i].Length;
-            }
         }
 
         public PathCompleteness Completeness { get; }
 
-        public Distance Distance { get; }
-
         public IReadOnlyList<IEdge> Edges { get; }
-        public int Iterations { get; }
+        
+        public Cost Cost => new Cost(Edges.Sum(edge => edge.Cost.Value));
     }
 }

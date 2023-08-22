@@ -1,10 +1,10 @@
 ﻿namespace GOAP
 {
-    public class Action : IAction
+    public class Action<TState> : IAction<TState>
     {
         private readonly string _name;
 
-        public Action(IRequirement requirement, IEffect effect, int cost, string name = "")
+        public Action(IRequirement<TState> requirement, IEffect<TState> effect, int cost, string name = "")
         {
             Requirement = requirement;
             Effect = effect;
@@ -12,8 +12,8 @@
             _name = name;
         }
     
-        public IRequirement Requirement { get; }
-        public IEffect Effect { get; }
+        public IRequirement<TState> Requirement { get; }
+        public IEffect<TState> Effect { get; }
         public int Cost { get; }
 
         public override string ToString()

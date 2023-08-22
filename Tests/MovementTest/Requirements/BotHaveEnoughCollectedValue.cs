@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GOAP
 {
-    public class BotHaveEnoughCollectedValue : IRequirement
+    public class BotHaveEnoughCollectedValue : IRequirement<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
         private readonly int _goalValue;
@@ -16,7 +16,7 @@ namespace GOAP
             _mismatchMultiplier = mismatchMultiplier;
         }
         
-        public int MismatchCost(IReadOnlyState state)
+        public int MismatchCost(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             return Mathf.Max(0, _goalValue - botState.CollectedValue) * _mismatchMultiplier;

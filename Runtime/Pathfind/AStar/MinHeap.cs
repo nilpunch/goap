@@ -5,12 +5,7 @@ namespace GOAP.AStar
 {
     internal sealed class MinHeap<T> where T : IComparable<T>
     {
-        private readonly List<T> _items;
-
-        public MinHeap()
-        {
-            _items = new List<T>();
-        }
+        private readonly List<T> _items = new List<T>();
 
         public int Count => _items.Count;
 

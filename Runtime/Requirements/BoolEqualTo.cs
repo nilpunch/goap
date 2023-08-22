@@ -2,7 +2,7 @@
 
 namespace GOAP
 {
-    public class BoolEqualTo : IRequirement
+    public class BoolEqualTo : IRequirement<IReadOnlyBlackboard>
     {
         private readonly PropertyId _propertyId;
         private readonly bool _value;
@@ -15,7 +15,7 @@ namespace GOAP
             _difficulty = difficulty;
         }
 
-        public int MismatchCost(IReadOnlyState state)
+        public int MismatchCost(IReadOnlyBlackboard state)
         {
             return state.Get<bool>(_propertyId) == _value ? 0 : _difficulty;
         }

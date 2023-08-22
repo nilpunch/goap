@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace GOAP
 {
-    public class IsBotInRangeOfInterest : IRequirement
+    public class IsBotInRangeOfInterest : IRequirement<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
         private readonly PropertyId _interest;
         private readonly float _appropriateRange;
         private readonly float _costPerUnit;
 
-        public IsBotInRangeOfInterest(PropertyId bot, PropertyId interest, float appropriateRange, float costPerUnit)
+        public IsBotInRangeOfInterest(PropertyId bot, PropertyId interest, float appropriateRange, float costPerUnit = 1)
         {
             _bot = bot;
             _interest = interest;
@@ -18,7 +18,7 @@ namespace GOAP
             _costPerUnit = costPerUnit;
         }
         
-        public int MismatchCost(IReadOnlyState state)
+        public int MismatchCost(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             var interestState = state.Get<InterestState>(_interest);

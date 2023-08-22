@@ -3,14 +3,14 @@ using Common;
 
 namespace GOAP
 {
-    public class CollectActionGenerator : IActionGenerator
+    public class CollectActionGenerator : IActionGenerator<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
-        private readonly PropertyId[] _interests;
+        private readonly IEnumerable<PropertyId> _interests;
         private readonly float _collectRange;
         private readonly float _costPerUnit;
 
-        public CollectActionGenerator(PropertyId bot, PropertyId[] interests, float collectRange, float costPerUnit)
+        public CollectActionGenerator(PropertyId bot, IEnumerable<PropertyId> interests, float collectRange, float costPerUnit)
         {
             _bot = bot;
             _interests = interests;
@@ -18,11 +18,11 @@ namespace GOAP
             _costPerUnit = costPerUnit;
         }
         
-        public IEnumerable<IAction> GenerateActions(IReadOnlyState state)
+        public IEnumerable<IAction<IReadOnlyBlackboard>> GenerateActions(IReadOnlyBlackboard state)
         {
             foreach (var interest in _interests)
             {
-                yield return new Action(new Requirements(new IRequirement[]
+                yield return new Action<IReadOnlyBlackboard>(new Requirements<IReadOnlyBlackboard>(new IRequirement<IReadOnlyBlackboard>[]
                     {
                         new IsBotInRangeOfInterest(_bot, interest, _collectRange, _costPerUnit),
                         new IsInterestHasCollectableValue(interest),

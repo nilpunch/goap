@@ -1,9 +1,9 @@
 ﻿namespace GOAP
 {
-    public interface IAction
+    public interface IAction<TState>
     {
-        IRequirement Requirement { get; }
-        IEffect Effect { get; }
+        IRequirement<TState> Requirement { get; }
+        IEffect<TState> Effect { get; }
         int Cost { get; }
     }
 }

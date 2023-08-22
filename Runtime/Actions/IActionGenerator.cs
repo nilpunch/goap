@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using Common;
 
 namespace GOAP
 {
-    public interface IActionGenerator
+    public interface IActionGenerator<TState>
     {
-        IEnumerable<IAction> GenerateActions(IReadOnlyState state);
+        IEnumerable<IAction<TState>> GenerateActions(TState state);
     }
 }

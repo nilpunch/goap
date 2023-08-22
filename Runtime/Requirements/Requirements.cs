@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common;
 
 namespace GOAP
 {
-    public class Requirements : IRequirement
+    public class Requirements<TState> : IRequirement<TState>
     {
-        private readonly List<IRequirement> _requirements;
+        private readonly List<IRequirement<TState>> _requirements;
 
-        public Requirements(IEnumerable<IRequirement> requirements)
+        public Requirements(IEnumerable<IRequirement<TState>> requirements)
         {
-            _requirements = new List<IRequirement>(requirements);
+            _requirements = new List<IRequirement<TState>>(requirements);
         }
 
-        public int MismatchCost(IReadOnlyState state)
+        public int MismatchCost(TState state)
         {
             return _requirements.Sum(requirement => requirement.MismatchCost(state));
         }

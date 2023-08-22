@@ -2,7 +2,7 @@
 
 namespace GOAP
 {
-    public class BoolSetEffect : IEffect
+    public class BoolSetEffect : IEffect<IReadOnlyBlackboard>
     {
         private readonly PropertyId _propertyId;
         private readonly bool _value;
@@ -13,12 +13,14 @@ namespace GOAP
             _value = value;
         }
 
-        public void Modify(IState state)
+        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
         {
-            state.Set(_propertyId, _value);
+            var newState = state.Clone();
+            newState.Set(_propertyId, _value);
+            return newState;
         }
 
-        public bool IsChangeSomething(IReadOnlyState state)
+        public bool IsChangeSomething(IReadOnlyBlackboard state)
         {
             return state.Get<bool>(_propertyId) != _value;
         }

@@ -2,7 +2,7 @@
 
 namespace GOAP
 {
-    public class MoveBotToInterestEffect : IEffect
+    public class MoveBotToInterestEffect : IEffect<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
         private readonly PropertyId _interest;
@@ -13,14 +13,18 @@ namespace GOAP
             _interest = interest;
         }
         
-        public void Modify(IState state)
+        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             botState.Position = state.Get<InterestState>(_interest).Position;
-            state.Set(_bot, botState);
+
+            var newState = state.Clone();
+            newState.Set(_bot, botState);
+
+            return newState;
         }
 
-        public bool IsChangeSomething(IReadOnlyState state)
+        public bool IsChangeSomething(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             var interestState = state.Get<InterestState>(_interest);

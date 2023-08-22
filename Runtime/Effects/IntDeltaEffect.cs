@@ -2,7 +2,7 @@
 
 namespace GOAP
 {
-    public class IntDeltaEffect : IEffect
+    public class IntDeltaEffect : IEffect<IReadOnlyBlackboard>
     {
         private readonly PropertyId _propertyId;
         private readonly int _delta;
@@ -13,13 +13,16 @@ namespace GOAP
             _delta = delta;
         }
 
-        public void Modify(IState state)
+        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
         {
             var value = state.Get<int>(_propertyId);
-            state.Set(_propertyId, value + _delta);
+
+            var newState = state.Clone();
+            newState.Set(_propertyId, value + _delta);
+            return newState;
         }
 
-        public bool IsChangeSomething(IReadOnlyState state)
+        public bool IsChangeSomething(IReadOnlyBlackboard state)
         {
             return _delta != 0;
         }

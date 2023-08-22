@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common;
 
 namespace GOAP
 {
-    public class EmptyGenerator : IActionGenerator
+    public class EmptyGenerator<TState> : IActionGenerator<TState>
     {
-        public IEnumerable<IAction> GenerateActions(IReadOnlyState state) => ArraySegment<IAction>.Empty;
+        public IEnumerable<IAction<TState>> GenerateActions(TState state) => ArraySegment<IAction<TState>>.Empty;
     }
 }

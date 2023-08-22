@@ -1,24 +1,22 @@
 ﻿using System.Linq;
-using Common;
-using GOAP.Utils;
 
 namespace GOAP
 {
-    public class Effect : IEffect
+    public class Effect<TState> : IEffect<TState>
     {
-        private readonly IEffect[] _effects;
+        private readonly IEffect<TState>[] _effects;
 
-        public Effect(IEffect[] effects)
+        public Effect(IEffect<TState>[] effects)
         {
             _effects = effects;
         }
 
-        public void Modify(IState state)
+        public TState Modify(TState state)
         {
-            _effects.ForEach(effect => effect.Modify(state));
+            return _effects.Aggregate(state, (current, effect) => effect.Modify(current));
         }
 
-        public bool IsChangeSomething(IReadOnlyState state)
+        public bool IsChangeSomething(TState state)
         {
             return _effects.Any(effect => effect.IsChangeSomething(state));
         }

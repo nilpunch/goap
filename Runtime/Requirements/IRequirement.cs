@@ -1,9 +1,7 @@
-﻿using Common;
-
-namespace GOAP
+﻿namespace GOAP
 {
-    public interface IRequirement
+    public interface IRequirement<TState>
     {
-        int MismatchCost(IReadOnlyState state);
+        int MismatchCost(TState state);
     }
 }

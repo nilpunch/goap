@@ -14,7 +14,7 @@ namespace GOAP.AStar
         public void AttachNode(INode node, IEdge from)
             => _cameFrom[node] = from;
 
-        public Path ConstructPathFrom(INode start, int iterations)
+        public Path ConstructPathFrom(INode start)
         {
             var current = start;
             var edges = new List<IEdge>();
@@ -27,9 +27,9 @@ namespace GOAP.AStar
 
             edges.Reverse();
 
-            PathCompleteness pathCompleteness = start.DistanceToGoal == Distance.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
+            PathCompleteness pathCompleteness = start.Remain == Cost.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
 
-            return new Path(pathCompleteness, edges, iterations);
+            return new Path(pathCompleteness, edges);
         }
 
         public void Clear() => _cameFrom.Clear();

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace GOAP
 {
-    public class CanBotMoveToInterest : IRequirement
+    public class CanBotMoveToInterest : IRequirement<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
         private readonly PropertyId _interest;
@@ -16,11 +16,11 @@ namespace GOAP
             _costPerUnit = costPerUnit;
         }
         
-        public int MismatchCost(IReadOnlyState state)
+        public int MismatchCost(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             var interestState = state.Get<InterestState>(_interest);
-            float distance = Vector3.Distance(botState.Position, interestState.Position) - botState.DistancePerMove;
+            float distance = Vector3.Distance(botState.Position, interestState.Position) - botState.MaxDistancePerMove;
             
             if (distance <= 0f)
             {

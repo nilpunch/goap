@@ -2,7 +2,7 @@
 
 namespace GOAP
 {
-    public class CollectValueEffect : IEffect
+    public class CollectValueEffect : IEffect<IReadOnlyBlackboard>
     {
         private readonly PropertyId _bot;
         private readonly PropertyId _interest;
@@ -13,19 +13,22 @@ namespace GOAP
             _interest = interest;
         }
         
-        public void Modify(IState state)
+        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
         {
             var botState = state.Get<BotState>(_bot);
             var interestState = state.Get<InterestState>(_interest);
 
             botState.CollectedValue += interestState.CollectableValue;
             interestState.CollectableValue = 0;
-            
-            state.Set(_bot, botState);
-            state.Set(_interest, interestState);
+
+            var newState = state.Clone();
+            newState.Set(_bot, botState);
+            newState.Set(_interest, interestState);
+
+            return newState;
         }
 
-        public bool IsChangeSomething(IReadOnlyState state)
+        public bool IsChangeSomething(IReadOnlyBlackboard state)
         {
             return state.Get<InterestState>(_interest).CollectableValue != 0;
         }

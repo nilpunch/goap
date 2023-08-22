@@ -6,15 +6,15 @@ namespace GOAP
     {
         private readonly string _actionName;
 
-        public ActionEdge(INode start, INode end, Distance length, string actionName = "")
+        public ActionEdge(INode start, INode end, Cost length, string actionName = "")
         {
             _actionName = actionName;
             Start = start;
             End = end;
-            Length = length;
+            Cost = length;
         }
 
-        public Distance Length { get; }
+        public Cost Cost { get; }
 
         public INode Start { get; }
         public INode End { get; }

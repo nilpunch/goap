@@ -19,7 +19,7 @@ namespace GOAP
 
         private void Awake()
         {
-            var worldState = new State();
+            var worldState = new Blackboard();
             worldState.Set(Hungry, true);
             worldState.Set(HasPhoneNumber, true);
             worldState.Set(HasIngredients, true);
@@ -28,54 +28,54 @@ namespace GOAP
             worldState.Set(FoodMixed, false);
             worldState.Set(FoodCooked, false);
 
-            var goal = new Requirements(new IRequirement[]
+            var goal = new Requirements<IReadOnlyBlackboard>(new IRequirement<IReadOnlyBlackboard>[]
             {
                 new BoolEqualTo(Hungry, false),
                 new BoolEqualTo(HasIngredients, true),
             });
     
-            var actionsLibrary = new ActionLibrary();
+            var actionsLibrary = new ActionLibrary<IReadOnlyBlackboard>();
     
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasFood, true), new Effect(new IEffect[]
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasFood, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
             {
                 new BoolSetEffect(Hungry, false),
             }), 1, "Eat"));
         
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasPhoneNumber, true), new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasPhoneNumber, true), new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
         
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(PizzaOrdered, true), new Effect(new IEffect[]
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(PizzaOrdered, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
             {
                 new BoolSetEffect(HasFood, true),
                 new BoolSetEffect(PizzaOrdered, false),
             }), 7, "WaitForDelivery"));
     
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(HasIngredients, true), new Effect(new IEffect[]
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasIngredients, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
             {
                 new BoolSetEffect(FoodMixed, true),
                 new BoolSetEffect(HasIngredients, false),
             }), 2, "MixIngredients"));
         
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(FoodMixed, true), new Effect(new IEffect[]
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(FoodMixed, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
             {
                 new BoolSetEffect(FoodMixed, false),
                 new BoolSetEffect(FoodCooked, true),
             }), 3, "CookFood"));
         
-            actionsLibrary.AddStaticAction(new Action(new BoolEqualTo(FoodCooked, true), new Effect(new IEffect[]
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(FoodCooked, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
             {
                 new BoolSetEffect(FoodCooked, false),
                 new BoolSetEffect(HasFood, true),
             }), 1, "ServeFood"));
         
-            actionsLibrary.AddStaticAction(new Action(new SatisfiedRequirement(),
+            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new SatisfiedRequirement<IReadOnlyBlackboard>(),
                 new BoolSetEffect(HasIngredients, true), 3, "GoToShop"));
 
             Debug.Log("Initial state: " + worldState);
             Debug.Log("Goal state: " + goal);
-            Path path = new PathFinder().FindPath(new ForwardSearchNode(worldState, goal, actionsLibrary));
-            Debug.Log("Plan " + path.Completeness + " in " + path.Iterations);
+            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<IReadOnlyBlackboard>(worldState, goal, actionsLibrary));
+            Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             if (path.Completeness == PathCompleteness.Complete)
-                Debug.Log(string.Join(", ", path.Edges.Select(edge => edge.ToString())));
+                Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
         }
     }
 }

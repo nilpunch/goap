@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GOAP.Utils
+namespace Utils
 {
     public static class EnumerableExtensions
     {

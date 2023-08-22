@@ -1,26 +1,24 @@
-﻿using System.Collections.Generic;
-using Common;
+﻿using System;
+using System.Collections.Generic;
 using GOAP.AStar;
 
 namespace GOAP
 {
-    public class ForwardSearchNode : INode
+    public class ForwardSearchNode<TState> : INode, IEquatable<ForwardSearchNode<TState>>
     {
-        private readonly IReadOnlyState _state;
-        private readonly IRequirement _goal;
-        private readonly IActionGenerator _actionGenerator;
+        private readonly TState _state;
+        private readonly IRequirement<TState> _goal;
+        private readonly IActionGenerator<TState> _actionGenerator;
 
-        public static int NodesOutgo { get; set; }
-        
-        public ForwardSearchNode(IReadOnlyState state, IRequirement goal, IActionGenerator actionGenerator)
+        public ForwardSearchNode(TState state, IRequirement<TState> goal, IActionGenerator<TState> actionGenerator)
         {
             _state = state;
             _goal = goal;
             _actionGenerator = actionGenerator;
-            DistanceToGoal = new Distance(_goal.MismatchCost(_state));
+            Remain = new Cost(_goal.MismatchCost(_state));
         }
 
-        public Distance DistanceToGoal { get; }
+        public Cost Remain { get; }
 
         public IEnumerable<IEdge> Outgoing
         {
@@ -28,17 +26,14 @@ namespace GOAP
             {
                 foreach (var action in _actionGenerator.GenerateActions(_state))
                 {
-                    NodesOutgo += 1;
-                    
                     if (!action.Requirement.IsSatisfied(_state) || !action.Effect.IsChangeSomething(_state))
                         continue;
                 
-                    var newState = _state.Clone();
-                    action.Effect.Modify(newState);
+                    var newState = action.Effect.Modify(_state);
 
                     yield return new ActionEdge(this,
-                        new ForwardSearchNode(newState, _goal, _actionGenerator),
-                        new Distance(action.Cost),
+                        new ForwardSearchNode<TState>(newState, _goal, _actionGenerator),
+                        new Cost(action.Cost),
                         action.ToString());
                 }
             }
@@ -47,6 +42,46 @@ namespace GOAP
         public override string ToString()
         {
             return _state.ToString();
+        }
+
+        public bool Equals(ForwardSearchNode<TState> other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+        
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+        
+            return _state.Equals(other._state);
+        }
+        
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+        
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+        
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+        
+            return Equals((ForwardSearchNode<TState>)obj);
+        }
+        
+        public override int GetHashCode()
+        {
+            return _state.GetHashCode();
         }
     }
 }

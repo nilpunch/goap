@@ -1,25 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Common;
 
 namespace GOAP
 {
-    public class ActionLibrary : IActionGenerator
+    public class ActionLibrary<TState> : IActionGenerator<TState>
     {
-        private readonly List<IAction> _staticActions = new List<IAction>();
-        private readonly List<IActionGenerator> _actionGenerators = new List<IActionGenerator>();
+        private readonly List<IAction<TState>> _staticActions = new List<IAction<TState>>();
+        private readonly List<IActionGenerator<TState>> _actionGenerators = new List<IActionGenerator<TState>>();
 
-        public void AddStaticAction(IAction action)
+        public void AddAction(IAction<TState> action)
         {
             _staticActions.Add(action);
         }
         
-        public void AddGenerator(IActionGenerator actionGenerator)
+        public void AddGenerator(IActionGenerator<TState> actionGenerator)
         {
             _actionGenerators.Add(actionGenerator);
         }
 
-        public IEnumerable<IAction> GenerateActions(IReadOnlyState state)
+        public IEnumerable<IAction<TState>> GenerateActions(TState state)
         {
             foreach (var staticAction in _staticActions)
             {

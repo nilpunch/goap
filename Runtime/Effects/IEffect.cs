@@ -1,10 +1,8 @@
-﻿using Common;
-
-namespace GOAP
+﻿namespace GOAP
 {
-    public interface IEffect
+    public interface IEffect<TState>
     {
-        void Modify(IState state);
-        bool IsChangeSomething(IReadOnlyState state);
+        TState Modify(TState state);
+        bool IsChangeSomething(TState state);
     }
 }
