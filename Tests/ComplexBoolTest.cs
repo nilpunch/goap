@@ -1,78 +1,75 @@
 ﻿using System.Linq;
 using GOAP.AStar;
-using Common;
 using UnityEngine;
 
 namespace GOAP
 {
     public class ComplexBoolTest : MonoBehaviour
     {
-        private static PropertyId HasFood { get; } = PropertyId.Unique(nameof(HasFood));
-        private static PropertyId Hungry { get; } = PropertyId.Unique(nameof(Hungry));
+        private static PropertyId HasFood { get; } = PropertyId.Unique();
+        private static PropertyId Hungry { get; } = PropertyId.Unique();
     
-        private static PropertyId HasPhoneNumber { get; } = PropertyId.Unique(nameof(HasPhoneNumber));
-        private static PropertyId PizzaOrdered { get; } = PropertyId.Unique(nameof(PizzaOrdered));
+        private static PropertyId HasPhoneNumber { get; } = PropertyId.Unique();
+        private static PropertyId PizzaOrdered { get; } = PropertyId.Unique();
     
-        private static PropertyId HasIngredients { get; } = PropertyId.Unique(nameof(HasIngredients));
-        private static PropertyId FoodMixed { get; } = PropertyId.Unique(nameof(FoodMixed));
-        private static PropertyId FoodCooked { get; } = PropertyId.Unique(nameof(FoodCooked));
+        private static PropertyId HasIngredients { get; } = PropertyId.Unique();
+        private static PropertyId FoodMixed { get; } = PropertyId.Unique();
+        private static PropertyId FoodCooked { get; } = PropertyId.Unique();
 
         private void Awake()
         {
-            var worldState = new Blackboard();
-            worldState.Set(Hungry, true);
-            worldState.Set(HasPhoneNumber, true);
-            worldState.Set(HasIngredients, true);
-            worldState.Set(HasFood, false);
-            worldState.Set(PizzaOrdered, false);
-            worldState.Set(FoodMixed, false);
-            worldState.Set(FoodCooked, false);
+            var worldState = new Board<PropertyId, bool>();
+            worldState[Hungry] = true;
+            worldState[HasPhoneNumber] = true;
+            worldState[HasIngredients] = true;
+            worldState[HasFood] = false;
+            worldState[PizzaOrdered] = false;
+            worldState[FoodMixed] = false;
+            worldState[FoodCooked] = false;
 
-            var goal = new Requirements<IReadOnlyBlackboard>(new IRequirement<IReadOnlyBlackboard>[]
+            var goal = new Requirements<IBoard<PropertyId, bool>>(new IRequirement<IBoard<PropertyId, bool>>[]
             {
-                new BoolEqualTo(Hungry, false),
-                new BoolEqualTo(HasIngredients, true),
+                new BoolEqualTo<PropertyId>(Hungry, false),
+                new BoolEqualTo<PropertyId>(HasIngredients, true),
             });
     
-            var actionsLibrary = new ActionLibrary<IReadOnlyBlackboard>();
+            var actionsLibrary = new ActionLibrary<IBoard<PropertyId, bool>>();
     
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasFood, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(HasFood, true), new Effect<IBoard<PropertyId, bool>>(new IEffect<IBoard<PropertyId, bool>>[]
             {
-                new BoolSetEffect(Hungry, false),
+                new BoolSetEffect<PropertyId>(Hungry, false),
             }), 1, "Eat"));
         
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasPhoneNumber, true), new BoolSetEffect(PizzaOrdered, true), 2, "PhoneForPizza"));
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(HasPhoneNumber, true), new BoolSetEffect<PropertyId>(PizzaOrdered, true), 2, "PhoneForPizza"));
         
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(PizzaOrdered, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(PizzaOrdered, true), new Effect<IBoard<PropertyId, bool>>(new IEffect<IBoard<PropertyId, bool>>[]
             {
-                new BoolSetEffect(HasFood, true),
-                new BoolSetEffect(PizzaOrdered, false),
+                new BoolSetEffect<PropertyId>(HasFood, true),
+                new BoolSetEffect<PropertyId>(PizzaOrdered, false),
             }), 7, "WaitForDelivery"));
     
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(HasIngredients, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(HasIngredients, true), new Effect<IBoard<PropertyId, bool>>(new IEffect<IBoard<PropertyId, bool>>[]
             {
-                new BoolSetEffect(FoodMixed, true),
-                new BoolSetEffect(HasIngredients, false),
+                new BoolSetEffect<PropertyId>(FoodMixed, true),
+                new BoolSetEffect<PropertyId>(HasIngredients, false),
             }), 2, "MixIngredients"));
         
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(FoodMixed, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(FoodMixed, true), new Effect<IBoard<PropertyId, bool>>(new IEffect<IBoard<PropertyId, bool>>[]
             {
-                new BoolSetEffect(FoodMixed, false),
-                new BoolSetEffect(FoodCooked, true),
+                new BoolSetEffect<PropertyId>(FoodMixed, false),
+                new BoolSetEffect<PropertyId>(FoodCooked, true),
             }), 3, "CookFood"));
         
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new BoolEqualTo(FoodCooked, true), new Effect<IReadOnlyBlackboard>(new IEffect<IReadOnlyBlackboard>[]
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new BoolEqualTo<PropertyId>(FoodCooked, true), new Effect<IBoard<PropertyId, bool>>(new IEffect<IBoard<PropertyId, bool>>[]
             {
-                new BoolSetEffect(FoodCooked, false),
-                new BoolSetEffect(HasFood, true),
+                new BoolSetEffect<PropertyId>(FoodCooked, false),
+                new BoolSetEffect<PropertyId>(HasFood, true),
             }), 1, "ServeFood"));
         
-            actionsLibrary.AddAction(new Action<IReadOnlyBlackboard>(new SatisfiedRequirement<IReadOnlyBlackboard>(),
-                new BoolSetEffect(HasIngredients, true), 3, "GoToShop"));
+            actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new SatisfiedRequirement<IBoard<PropertyId, bool>>(),
+                new BoolSetEffect<PropertyId>(HasIngredients, true), 3, "GoToShop"));
 
-            Debug.Log("Initial state: " + worldState);
-            Debug.Log("Goal state: " + goal);
-            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<IReadOnlyBlackboard>(worldState, goal, actionsLibrary));
+            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<IBoard<PropertyId, bool>>(worldState, goal, new OnlyRelevantActions<IBoard<PropertyId, bool>>(actionsLibrary)));
             Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             if (path.Completeness == PathCompleteness.Complete)
                 Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));

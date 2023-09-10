@@ -1,39 +1,39 @@
 ﻿using System.Linq;
-using Common;
 using GOAP.AStar;
 using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
     public class MovementTest : MonoBehaviour
     {
+        [SerializeField] private int _goalCollectables = 2;
+        
         private void OnEnable()
         {
-            var worldState = new Blackboard();
-
-            var bot = FindObjectOfType<Bot>();
-            worldState.Set(bot.Id, bot.State);
-
+            var interestsBoard = new Board<PropertyId, InterestState>();
             var interests = FindObjectsOfType<PointOfInterest>();
             var interestsIds = interests.Select(interest => interest.Id).ToArray();
             foreach (var pointOfInterest in interests)
             {
-                worldState.Set(pointOfInterest.Id, pointOfInterest.State);
+                interestsBoard[pointOfInterest.Id] = pointOfInterest.State;
             }
+            
+            var bot = FindObjectOfType<Bot>();
+            var botState = bot.State;
 
-            var goal = new Requirements<IReadOnlyBlackboard>(new IRequirement<IReadOnlyBlackboard>[]
+            var worldState = new WorldState(botState, interestsBoard);
+
+            var goal = new Requirements<WorldState>(new IRequirement<WorldState>[]
             {
-                new BotHaveEnoughCollectedValue(bot.Id, goalValue: 2),
+                new BotHaveEnoughCollectedValue(goalValue: _goalCollectables),
             });
         
-            var actionsLibrary = new ActionLibrary<IReadOnlyBlackboard>();
+            var actionsLibrary = new ActionLibrary<WorldState>();
         
             actionsLibrary.AddGenerator(new CollectActionGenerator(bot.Id, interestsIds, 0.25f, 1));
             actionsLibrary.AddGenerator(new BotMovementActionGenerator(bot.Id, interestsIds, 1));
-
-            // Debug.Log("Initial state: " + worldState);
-            // Debug.Log("Goal state: " + goal);
-            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<IReadOnlyBlackboard>(worldState, goal, actionsLibrary));
+            
+            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
             Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
         }

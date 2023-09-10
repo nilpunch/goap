@@ -1,12 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
     public struct InterestState : IEquatable<InterestState>
     {
-        public InterestState(Vector3 position, int collectableValue)
+        private readonly string _name;
+
+        public InterestState(Vector3 position, int collectableValue, string name)
         {
+            _name = name;
             Position = position;
             CollectableValue = collectableValue;
         }
@@ -28,6 +31,11 @@ namespace GOAP
         public override int GetHashCode()
         {
             return HashCode.Combine(Position, CollectableValue);
+        }
+
+        public override string ToString()
+        {
+            return _name;
         }
     }
 }

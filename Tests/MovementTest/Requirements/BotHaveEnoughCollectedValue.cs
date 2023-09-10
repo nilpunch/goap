@@ -1,24 +1,21 @@
-﻿using Common;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
-    public class BotHaveEnoughCollectedValue : IRequirement<IReadOnlyBlackboard>
+    public class BotHaveEnoughCollectedValue : IRequirement<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly int _goalValue;
         private readonly int _mismatchMultiplier;
 
-        public BotHaveEnoughCollectedValue(PropertyId bot, int goalValue, int mismatchMultiplier = 1)
+        public BotHaveEnoughCollectedValue(int goalValue, int mismatchMultiplier = 1)
         {
-            _bot = bot;
             _goalValue = goalValue;
             _mismatchMultiplier = mismatchMultiplier;
         }
         
-        public int MismatchCost(IReadOnlyBlackboard state)
+        public int MismatchCost(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
+            var botState = state.Bot;
             return Mathf.Max(0, _goalValue - botState.CollectedValue) * _mismatchMultiplier;
         }
     }

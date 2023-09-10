@@ -1,33 +1,26 @@
-﻿using Common;
-
-namespace GOAP
+﻿namespace GOAP.Test.Movement
 {
-    public class MoveBotToInterestEffect : IEffect<IReadOnlyBlackboard>
+    public class MoveBotToInterestEffect : IEffect<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly PropertyId _interest;
 
-        public MoveBotToInterestEffect(PropertyId bot, PropertyId interest)
+        public MoveBotToInterestEffect(PropertyId interest)
         {
-            _bot = bot;
             _interest = interest;
         }
         
-        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
+        public WorldState Modify(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
-            botState.Position = state.Get<InterestState>(_interest).Position;
-
-            var newState = state.Clone();
-            newState.Set(_bot, botState);
-
-            return newState;
+            var newBotState = state.Bot;
+            newBotState.Position = state.Interests[_interest].Position;
+            
+            return new WorldState(newBotState, state.Interests);
         }
 
-        public bool IsChangeSomething(IReadOnlyBlackboard state)
+        public bool IsChangeSomething(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
-            var interestState = state.Get<InterestState>(_interest);
+            var botState = state.Bot;
+            var interestState = state.Interests[_interest];
             return !botState.Position.Equals(interestState.Position);
         }
     }

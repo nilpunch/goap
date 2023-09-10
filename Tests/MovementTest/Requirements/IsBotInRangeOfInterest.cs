@@ -1,27 +1,24 @@
-﻿using Common;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
-    public class IsBotInRangeOfInterest : IRequirement<IReadOnlyBlackboard>
+    public class IsBotInRangeOfInterest : IRequirement<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly PropertyId _interest;
         private readonly float _appropriateRange;
         private readonly float _costPerUnit;
 
-        public IsBotInRangeOfInterest(PropertyId bot, PropertyId interest, float appropriateRange, float costPerUnit = 1)
+        public IsBotInRangeOfInterest(PropertyId interest, float appropriateRange, float costPerUnit = 1)
         {
-            _bot = bot;
             _interest = interest;
             _appropriateRange = appropriateRange;
             _costPerUnit = costPerUnit;
         }
         
-        public int MismatchCost(IReadOnlyBlackboard state)
+        public int MismatchCost(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
-            var interestState = state.Get<InterestState>(_interest);
+            var botState = state.Bot;
+            var interestState = state.Interests[_interest];
             float distance = Vector3.Distance(botState.Position, interestState.Position) - _appropriateRange;
             
             if (distance <= 0f)

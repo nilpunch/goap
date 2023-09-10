@@ -1,36 +1,30 @@
-﻿using Common;
-
-namespace GOAP
+﻿namespace GOAP.Test.Movement
 {
-    public class CollectValueEffect : IEffect<IReadOnlyBlackboard>
+    public class CollectValueEffect : IEffect<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly PropertyId _interest;
 
-        public CollectValueEffect(PropertyId bot, PropertyId interest)
+        public CollectValueEffect(PropertyId interest)
         {
-            _bot = bot;
             _interest = interest;
         }
         
-        public IReadOnlyBlackboard Modify(IReadOnlyBlackboard state)
+        public WorldState Modify(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
-            var interestState = state.Get<InterestState>(_interest);
+            var newBotState = state.Bot;
+            var newInterestState = state.Interests[_interest];
+            newBotState.CollectedValue += newInterestState.CollectableValue;
+            newInterestState.CollectableValue = 0;
 
-            botState.CollectedValue += interestState.CollectableValue;
-            interestState.CollectableValue = 0;
+            var newInterests = state.Interests.CloneAsWriteable();
+            newInterests[_interest] = newInterestState;
 
-            var newState = state.Clone();
-            newState.Set(_bot, botState);
-            newState.Set(_interest, interestState);
-
-            return newState;
+            return new WorldState(newBotState, newInterests);
         }
 
-        public bool IsChangeSomething(IReadOnlyBlackboard state)
+        public bool IsChangeSomething(WorldState state)
         {
-            return state.Get<InterestState>(_interest).CollectableValue != 0;
+            return state.Interests[_interest].CollectableValue != 0;
         }
     }
 }

@@ -1,8 +1,6 @@
-using Common;
-
-namespace GOAP
+namespace GOAP.Test.Movement
 {
-    public class IsInterestHasCollectableValue : IRequirement<IReadOnlyBlackboard>
+    public class IsInterestHasCollectableValue : IRequirement<WorldState>
     {
         private readonly PropertyId _interest;
 
@@ -11,9 +9,9 @@ namespace GOAP
             _interest = interest;
         }
         
-        public int MismatchCost(IReadOnlyBlackboard state)
+        public int MismatchCost(WorldState state)
         {
-            return state.Get<InterestState>(_interest).CollectableValue > 0 ? 0 : 100;
+            return state.Interests[_interest].CollectableValue > 0 ? 0 : 100;
         }
     }
 }

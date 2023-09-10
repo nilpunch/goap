@@ -1,12 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
     public struct BotState : IEquatable<BotState>
     {
-        public BotState(Vector3 position, float maxDistancePerMove, int collectedValue)
+        private readonly string _name;
+
+        public BotState(Vector3 position, float maxDistancePerMove, int collectedValue, string name)
         {
+            _name = name;
             Position = position;
             MaxDistancePerMove = maxDistancePerMove;
             CollectedValue = collectedValue;
@@ -31,6 +34,11 @@ namespace GOAP
         public override int GetHashCode()
         {
             return HashCode.Combine(Position, MaxDistancePerMove, CollectedValue);
+        }
+
+        public override string ToString()
+        {
+            return _name;
         }
     }
 }

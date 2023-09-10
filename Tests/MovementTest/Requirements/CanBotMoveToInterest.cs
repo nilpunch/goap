@@ -1,25 +1,22 @@
-﻿using Common;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
-    public class CanBotMoveToInterest : IRequirement<IReadOnlyBlackboard>
+    public class CanBotMoveToInterest : IRequirement<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly PropertyId _interest;
         private readonly float _costPerUnit;
 
-        public CanBotMoveToInterest(PropertyId bot, PropertyId interest, float costPerUnit)
+        public CanBotMoveToInterest(PropertyId interest, float costPerUnit = 1f)
         {
-            _bot = bot;
             _interest = interest;
             _costPerUnit = costPerUnit;
         }
         
-        public int MismatchCost(IReadOnlyBlackboard state)
+        public int MismatchCost(WorldState state)
         {
-            var botState = state.Get<BotState>(_bot);
-            var interestState = state.Get<InterestState>(_interest);
+            var botState = state.Bot;
+            var interestState = state.Interests[_interest];
             float distance = Vector3.Distance(botState.Position, interestState.Position) - botState.MaxDistancePerMove;
             
             if (distance <= 0f)

@@ -4,7 +4,7 @@ using GOAP.AStar;
 
 namespace GOAP
 {
-    public class ForwardSearchNode<TState> : INode, IEquatable<ForwardSearchNode<TState>>
+    public class ForwardSearchNode<TState> : INode, IEquatable<ForwardSearchNode<TState>> where TState : IEquatable<TState>
     {
         private readonly TState _state;
         private readonly IRequirement<TState> _goal;
@@ -26,12 +26,9 @@ namespace GOAP
             {
                 foreach (var action in _actionGenerator.GenerateActions(_state))
                 {
-                    if (!action.Requirement.IsSatisfied(_state) || !action.Effect.IsChangeSomething(_state))
-                        continue;
-                
                     var newState = action.Effect.Modify(_state);
 
-                    yield return new ActionEdge(this,
+                    yield return new Edge(this,
                         new ForwardSearchNode<TState>(newState, _goal, _actionGenerator),
                         new Cost(action.Cost),
                         action.ToString());
@@ -47,35 +44,20 @@ namespace GOAP
         public bool Equals(ForwardSearchNode<TState> other)
         {
             if (ReferenceEquals(null, other))
-            {
                 return false;
-            }
-        
             if (ReferenceEquals(this, other))
-            {
                 return true;
-            }
-        
             return _state.Equals(other._state);
         }
         
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
-            {
                 return false;
-            }
-        
             if (ReferenceEquals(this, obj))
-            {
                 return true;
-            }
-        
             if (obj.GetType() != GetType())
-            {
                 return false;
-            }
-        
             return Equals((ForwardSearchNode<TState>)obj);
         }
         

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using Common;
 
-namespace GOAP
+namespace GOAP.Test.Movement
 {
-    public class CollectActionGenerator : IActionGenerator<IReadOnlyBlackboard>
+    public class CollectActionGenerator : IActionGenerator<WorldState>
     {
         private readonly PropertyId _bot;
         private readonly IEnumerable<PropertyId> _interests;
@@ -18,16 +17,16 @@ namespace GOAP
             _costPerUnit = costPerUnit;
         }
         
-        public IEnumerable<IAction<IReadOnlyBlackboard>> GenerateActions(IReadOnlyBlackboard state)
+        public IEnumerable<IAction<WorldState>> GenerateActions(WorldState state)
         {
             foreach (var interest in _interests)
             {
-                yield return new Action<IReadOnlyBlackboard>(new Requirements<IReadOnlyBlackboard>(new IRequirement<IReadOnlyBlackboard>[]
+                yield return new Action<WorldState>(new Requirements<WorldState>(new IRequirement<WorldState>[]
                     {
-                        new IsBotInRangeOfInterest(_bot, interest, _collectRange, _costPerUnit),
+                        new IsBotInRangeOfInterest(interest, _collectRange, _costPerUnit),
                         new IsInterestHasCollectableValue(interest),
                     }),
-                    new CollectValueEffect(_bot, interest), 1, _bot + " Collect " + interest);
+                    new CollectValueEffect(interest), 1, state.Bot + " Collect " + state.Interests[interest]);
             }
         }
     }
