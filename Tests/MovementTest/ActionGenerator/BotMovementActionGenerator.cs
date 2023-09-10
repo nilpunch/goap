@@ -5,14 +5,12 @@ namespace GOAP.Test.Movement
 {
     public class BotMovementActionGenerator : IActionGenerator<WorldState>
     {
-        private readonly PropertyId _bot;
         private readonly IEnumerable<PropertyId> _interests;
         private readonly float _costPerUnit;
         private readonly int _fixedCost;
 
-        public BotMovementActionGenerator(PropertyId bot, IEnumerable<PropertyId> interests, float costPerUnit = 1f, int fixedCost = 1)
+        public BotMovementActionGenerator(IEnumerable<PropertyId> interests, float costPerUnit = 1f, int fixedCost = 1)
         {
-            _bot = bot;
             _interests = interests;
             _costPerUnit = costPerUnit;
             _fixedCost = fixedCost;

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using GOAP.Pathfinding;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace GOAP.Test.Movement
 {
@@ -8,18 +10,27 @@ namespace GOAP.Test.Movement
     {
         [SerializeField] private int _goalCollectables = 2;
         
-        private void OnEnable()
+        private PointOfInterest[] _interests;
+        private Bot _bot;
+        private AStar _aStar;
+
+        private void Awake()
+        {
+            _bot = FindObjectOfType<Bot>();
+            _interests = FindObjectsOfType<PointOfInterest>();
+            _aStar = new AStar();
+        }
+
+        private void Update()
         {
             var interestsBoard = new Board<PropertyId, InterestState>();
-            var interests = FindObjectsOfType<PointOfInterest>();
-            var interestsIds = interests.Select(interest => interest.Id).ToArray();
-            foreach (var pointOfInterest in interests)
+            var interestsIds = _interests.Select(interest => interest.Id).ToArray();
+            foreach (var pointOfInterest in _interests)
             {
                 interestsBoard[pointOfInterest.Id] = pointOfInterest.State;
             }
-            
-            var bot = FindObjectOfType<Bot>();
-            var botState = bot.State;
+
+            var botState = _bot.State;
 
             var worldState = new WorldState(botState, interestsBoard);
 
@@ -30,12 +41,12 @@ namespace GOAP.Test.Movement
         
             var actionsLibrary = new ActionLibrary<WorldState>();
         
-            actionsLibrary.AddGenerator(new CollectActionGenerator(bot.Id, interestsIds, 0.25f, 1));
-            actionsLibrary.AddGenerator(new BotMovementActionGenerator(bot.Id, interestsIds, 1));
-            
-            (var path, var iterations, var outgoingNodes) = new Pathfinding.AStar().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
-            Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
-            Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
+            actionsLibrary.AddGenerator(new CollectActionGenerator(interestsIds, 0.25f, 1));
+            actionsLibrary.AddGenerator(new BotMovementActionGenerator(interestsIds, 1));
+
+            (var path, var iterations, var outgoingNodes) = _aStar.FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
+            // Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
+            // Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
         }
     }
 }

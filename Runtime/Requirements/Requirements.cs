@@ -5,7 +5,7 @@ namespace GOAP
 {
     public class Requirements<TState> : IRequirement<TState>
     {
-        private readonly List<IRequirement<TState>> _requirements;
+        private readonly IEnumerable<IRequirement<TState>> _requirements;
 
         public Requirements(IEnumerable<IRequirement<TState>> requirements)
         {
