@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GOAP.AStar
+namespace GOAP.Pathfinding
 {
     public struct Cost : IComparable<Cost>, IEquatable<Cost>
     {

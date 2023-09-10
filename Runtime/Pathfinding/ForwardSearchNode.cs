@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GOAP.AStar;
 
-namespace GOAP
+namespace GOAP.Pathfinding
 {
     public class ForwardSearchNode<TState> : INode, IEquatable<ForwardSearchNode<TState>> where TState : IEquatable<TState>
     {

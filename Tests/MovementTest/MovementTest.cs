@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GOAP.AStar;
+using GOAP.Pathfinding;
 using UnityEngine;
 
 namespace GOAP.Test.Movement
@@ -33,7 +33,7 @@ namespace GOAP.Test.Movement
             actionsLibrary.AddGenerator(new CollectActionGenerator(bot.Id, interestsIds, 0.25f, 1));
             actionsLibrary.AddGenerator(new BotMovementActionGenerator(bot.Id, interestsIds, 1));
             
-            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
+            (var path, var iterations, var outgoingNodes) = new Pathfinding.AStar().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
             Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
         }

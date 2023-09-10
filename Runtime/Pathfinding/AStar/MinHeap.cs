@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GOAP.AStar
+namespace GOAP.Pathfinding
 {
     internal sealed class MinHeap<T> where T : IComparable<T>
     {

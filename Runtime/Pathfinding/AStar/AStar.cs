@@ -1,21 +1,21 @@
 ﻿using System.Collections.Generic;
 
-namespace GOAP.AStar
+namespace GOAP.Pathfinding
 {
-    public sealed class PathFinder
+    public sealed class AStar
     {
         private readonly int _maxIterations;
-        private readonly MinHeap<PathFinderNode> _interesting;
-        private readonly Dictionary<INode, PathFinderNode> _nodes;
+        private readonly MinHeap<AStarNode> _interesting;
+        private readonly Dictionary<INode, AStarNode> _nodes;
         private readonly PathMaker _pathMaker;
 
-        private PathFinderNode _nodeClosestToGoal;
+        private AStarNode _nodeClosestToGoal;
 
-        public PathFinder(int maxIterations = 10000)
+        public AStar(int maxIterations = 10000)
         {
             _maxIterations = maxIterations;
-            _interesting = new MinHeap<PathFinderNode>();
-            _nodes = new Dictionary<INode, PathFinderNode>();
+            _interesting = new MinHeap<AStarNode>();
+            _nodes = new Dictionary<INode, AStarNode>();
             _pathMaker = new PathMaker();
         }
 
@@ -24,8 +24,8 @@ namespace GOAP.AStar
             ResetState();
             AddFirstNode(start);
 
-            int iterations = 0;
-            int outgoingNodes = 0;
+            var iterations = 0;
+            var outgoingNodes = 0;
 
             while (_interesting.Count > 0 && iterations < _maxIterations)
             {
@@ -68,13 +68,13 @@ namespace GOAP.AStar
 
         private void AddFirstNode(INode start)
         {
-            var head = new PathFinderNode(start, Cost.Zero, start.Remain);
+            var head = new AStarNode(start, Cost.Zero, start.Remain);
             _interesting.Insert(head);
             _nodes.Add(head.Node, head);
             _nodeClosestToGoal = head;
         }
 
-        private void UpdateNodeClosestToGoal(PathFinderNode current)
+        private void UpdateNodeClosestToGoal(AStarNode current)
         {
             if (current.Remain < _nodeClosestToGoal.Remain)
             {
@@ -82,7 +82,7 @@ namespace GOAP.AStar
             }
         }
 
-        private void UpdateExistingNode(INode node, IEdge from, Cost traversed, PathFinderNode pathfinderNode)
+        private void UpdateExistingNode(INode node, IEdge from, Cost traversed, AStarNode pathfinderNode)
         {
             if (pathfinderNode.Traversed > traversed)
             {
@@ -95,11 +95,11 @@ namespace GOAP.AStar
         {
             _pathMaker.AttachNode(node, from);
 
-            var pathFinderNode = new PathFinderNode(node, traversed, node.Remain);
+            var pathFinderNode = new AStarNode(node, traversed, node.Remain);
             _interesting.Insert(pathFinderNode);
             _nodes[node] = pathFinderNode;
         }
 
-        private static bool GoalReached(PathFinderNode current) => current.Remain == Cost.Zero;
+        private static bool GoalReached(AStarNode current) => current.Remain == Cost.Zero;
     }
 }

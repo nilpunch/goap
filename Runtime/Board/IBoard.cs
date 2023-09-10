@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 
 namespace GOAP
 {
@@ -6,6 +7,7 @@ namespace GOAP
 	{
 		TValue this[TKey key] { get; }
 		
+		[Pure]
 		IWriteBoard<TKey, TValue> CloneAsWriteable();
 	}
 }

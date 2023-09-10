@@ -79,11 +79,11 @@ namespace GOAP
 		
 		private static int ListHashCode(SortedList<TKey, TValue> list)
 		{
-			int hash = 0;
+			var hash = 0;
 
 			var values = list.Values;
 			var keys = list.Keys;
-			for (int i = 0; i < list.Count; i++)
+			for (var i = 0; i < list.Count; i++)
 			{
 				hash ^= HashCode.Combine(values[i], keys[i]);
 			}

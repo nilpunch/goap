@@ -17,14 +17,9 @@ namespace GOAP.Test.Movement
         {
             var botState = state.Bot;
             var interestState = state.Interests[_interest];
-            float distance = Vector3.Distance(botState.Position, interestState.Position) - botState.MaxDistancePerMove;
+            var distance = Vector3.Distance(botState.Position, interestState.Position) - botState.MaxDistancePerMove;
             
-            if (distance <= 0f)
-            {
-                return 0;
-            }
-
-            return Mathf.CeilToInt(distance * _costPerUnit);
+            return distance <= 0f ? 0 : Mathf.CeilToInt(distance * _costPerUnit);
         }
     }
 }

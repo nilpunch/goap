@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GOAP.AStar
+namespace GOAP.Pathfinding
 {
     internal sealed class PathMaker
     {
@@ -27,7 +27,7 @@ namespace GOAP.AStar
 
             edges.Reverse();
 
-            PathCompleteness pathCompleteness = start.Remain == Cost.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
+            var pathCompleteness = start.Remain == Cost.Zero ? PathCompleteness.Complete : PathCompleteness.Incomplete;
 
             return new Path(pathCompleteness, edges);
         }

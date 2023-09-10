@@ -21,7 +21,7 @@ namespace Utils
         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
         public static int IndexOf<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
-            int index = 0;
+            var index = 0;
             foreach (var item in items)
             {
                 if (predicate(item))
@@ -55,7 +55,7 @@ namespace Utils
             if (it.MoveNext() == false)
                 yield break;
 
-            TSource previous = it.Current;
+            var previous = it.Current;
 
             while (it.MoveNext())
             {
@@ -84,12 +84,12 @@ namespace Utils
 
         public static T GetMin<T>(this IEnumerable<T> items, Func<T, float> action)
         {
-            float min = float.MaxValue;
+            var min = float.MaxValue;
             T minItem = default;
 
             foreach (var item in items)
             {
-                float value = action.Invoke(item);
+                var value = action.Invoke(item);
                 if (min > value)
                 {
                     min = value;
@@ -102,12 +102,12 @@ namespace Utils
 
         public static T GetMax<T>(this IEnumerable<T> items, Func<T, float> action)
         {
-            float max = float.MinValue;
+            var max = float.MinValue;
             T maxItem = default;
 
             foreach (var item in items)
             {
-                float value = action.Invoke(item);
+                var value = action.Invoke(item);
                 if (max < value)
                 {
                     max = value;

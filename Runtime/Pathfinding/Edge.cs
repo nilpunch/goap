@@ -1,6 +1,6 @@
-﻿using GOAP.AStar;
+﻿using GOAP.Pathfinding;
 
-namespace GOAP
+namespace GOAP.Pathfinding
 {
     public sealed class Edge : IEdge
     {

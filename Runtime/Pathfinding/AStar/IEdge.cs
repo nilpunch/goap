@@ -1,4 +1,4 @@
-﻿namespace GOAP.AStar
+﻿namespace GOAP.Pathfinding
 {
     public interface IEdge
     {

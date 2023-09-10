@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace GOAP.AStar
+namespace GOAP.Pathfinding
 {
-    internal sealed class PathFinderNode : IComparable<PathFinderNode>
+    internal sealed class AStarNode : IComparable<AStarNode>
     {
-        public PathFinderNode(INode node, Cost traversed, Cost remain)
+        public AStarNode(INode node, Cost traversed, Cost remain)
         {
             Node = node;
             Traversed = traversed;
@@ -17,7 +17,7 @@ namespace GOAP.AStar
         public Cost Remain { get; }
         private Cost TotalExpectedCost { get; }
 
-        public int CompareTo(PathFinderNode other)
+        public int CompareTo(AStarNode other)
         {
             return TotalExpectedCost.CompareTo(other.TotalExpectedCost);
         }

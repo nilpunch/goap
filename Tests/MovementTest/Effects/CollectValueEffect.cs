@@ -13,6 +13,7 @@
         {
             var newBotState = state.Bot;
             var newInterestState = state.Interests[_interest];
+            
             newBotState.CollectedValue += newInterestState.CollectableValue;
             newInterestState.CollectableValue = 0;
 

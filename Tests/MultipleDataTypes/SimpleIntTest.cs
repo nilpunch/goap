@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GOAP.AStar;
+using GOAP.Pathfinding;
 using UnityEngine;
 
 namespace GOAP.Test.MultiData
@@ -35,7 +35,7 @@ namespace GOAP.Test.MultiData
                 new WorldStateBoolEffect(new BoolSetEffect<PropertyId>(HaveFood, true)),
                 1, "ObtainFood"));
 
-            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
+            (var path, var iterations, var outgoingNodes) = new Pathfinding.AStar().FindPath(new ForwardSearchNode<WorldState>(worldState, goal, new OnlyRelevantActions<WorldState>(actionsLibrary)));
             Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));
         }

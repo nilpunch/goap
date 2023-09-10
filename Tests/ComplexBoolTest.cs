@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GOAP.AStar;
+using GOAP.Pathfinding;
 using UnityEngine;
 
 namespace GOAP
@@ -69,7 +69,7 @@ namespace GOAP
             actionsLibrary.AddAction(new Action<IBoard<PropertyId, bool>>(new SatisfiedRequirement<IBoard<PropertyId, bool>>(),
                 new BoolSetEffect<PropertyId>(HasIngredients, true), 3, "GoToShop"));
 
-            (Path path, int iterations, int outgoingNodes) = new PathFinder().FindPath(new ForwardSearchNode<IBoard<PropertyId, bool>>(worldState, goal, new OnlyRelevantActions<IBoard<PropertyId, bool>>(actionsLibrary)));
+            (var path, var iterations, var outgoingNodes) = new Pathfinding.AStar().FindPath(new ForwardSearchNode<IBoard<PropertyId, bool>>(worldState, goal, new OnlyRelevantActions<IBoard<PropertyId, bool>>(actionsLibrary)));
             Debug.Log("Plan " + path.Completeness + " in " + iterations + " iterations and " + outgoingNodes + " searched actions.");
             if (path.Completeness == PathCompleteness.Complete)
                 Debug.Log("Plan:\n" + string.Join("\n", path.Edges.Select(edge => edge.ToString())));

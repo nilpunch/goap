@@ -26,7 +26,7 @@ namespace GOAP.Test.Movement
             {
                 var interestState = state.Interests[interest];
             
-                float neededMovement = Vector3.Distance(botState.Position, interestState.Position);
+                var neededMovement = Vector3.Distance(botState.Position, interestState.Position);
 
                 yield return new Action<WorldState>(
                     new CanBotMoveToInterest(interest, _costPerUnit),
